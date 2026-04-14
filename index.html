@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.R.R. & Asociados - Consultoría Financiera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- MENÚ LATERAL (SIDEBAR) -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i data-lucide="briefcase"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="logo-title">P.R.R. & Asociados</h1>
+                    <span class="logo-subtitle">El banco distinto</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Navegación principal">
+            <div class="nav-section">
+                <p class="nav-section-title">Principal</p>
+                <div class="nav-group">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="transactions">
+                        <i data-lucide="arrow-left-right"></i>
+                        <span>Transacciones</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <p class="nav-section-title">Mi Cuenta</p>
+                <div class="nav-group">
+                    <a href="#" class="nav-link active" data-page="profile">
+                        <i data-lucide="user"></i>
+                        <span>Mi Perfil</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="settings">
+                        <i data-lucide="settings"></i>
+                        <span>Configuración</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <p class="nav-section-title">Operaciones</p>
+                <div class="nav-group">
+                    <a href="#" class="nav-link" data-page="deposit">
+                        <i data-lucide="plus-circle"></i>
+                        <span>Consignar</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="transfer">
+                        <i data-lucide="send"></i>
+                        <span>Transferir</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="balance">
+                        <i data-lucide="dollar-sign"></i>
+                        <span>Consultar Saldo</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="movements">
+                        <i data-lucide="list"></i>
+                        <span>Ver Movimientos</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <p class="nav-section-title">Mis Productos</p>
+                <div class="nav-group">
+                    <a href="#" class="nav-link active" data-page="cards">
+                        <i data-lucide="credit-card"></i>
+                        <span>Tarjetas</span>
+                    </a>
+                    <a href="#" class="nav-link" data-page="accounts">
+                        <i data-lucide="wallet"></i>
+                        <span>Cuentas</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <div class="user-avatar">
+                    <img src="https://i.pravatar.cc/100?u=jp" alt="Juan Pérez">
+                </div>
+                <div class="user-info">
+                    <p class="user-name">Juan Pérez</p>
+                    <p class="user-status">Cliente Platinum</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-container">
+        <!-- NAVBAR SUPERIOR -->
+        <header class="navbar">
+            <div class="navbar-content">
+                <button id="toggleBtn" class="navbar-toggle" aria-label="Toggle sidebar">
+                    <i data-lucide="menu"></i>
+                </button>
+                
+                <div class="navbar-date">
+                    <i data-lucide="calendar" class="date-icon"></i>
+                    <span id="currentDate"></span>
+                </div>
+                
+                <div class="navbar-actions">
+                    <button class="action-btn" aria-label="Notificaciones">
+                        <i data-lucide="bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="action-btn" aria-label="Ayuda">
+                        <i data-lucide="help-circle"></i>
+                    </button>
+                    <div class="divider"></div>
+                    <button class="action-btn" aria-label="Configuración">
+                        <i data-lucide="settings"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content-wrapper">
+            <main class="main-content">
+                <!-- SECCIÓN PERFIL (OCULTA POR DEFECTO) -->
+                <div id="profile-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Mi Perfil</h2>
+                        <p class="hero-subtitle">Actualiza tu información personal y de contacto</p>
+                    </section>
+
+                    <div class="profile-container">
+                        <!-- TARJETA DE PERFIL -->
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-avatar-section">
+                                    <div class="profile-avatar-container">
+                                        <img src="https://i.pravatar.cc/150?u=jp" alt="Foto de perfil" class="profile-avatar">
+                                        <button class="avatar-edit-btn" aria-label="Cambiar foto">
+                                            <i data-lucide="camera"></i>
+                                        </button>
+                                    </div>
+                                    <div class="profile-info">
+                                        <h3 class="profile-name">Juan Pérez García</h3>
+                                        <p class="profile-status">Cliente Platinum</p>
+                                        <div class="profile-id">ID: CLI-2024-001234</div>
+                                    </div>
+                                </div>
+                                <div class="profile-actions">
+                                    <button class="btn-secondary">
+                                        <i data-lucide="download"></i>
+                                        Descargar Datos
+                                    </button>
+                                    <button class="btn-primary">
+                                        <i data-lucide="save"></i>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FORMULARIO DE EDICIÓN -->
+                        <div class="profile-form-container">
+                            <div class="form-sections">
+                                <!-- INFORMACIÓN PERSONAL -->
+                                <div class="form-section">
+                                    <h4 class="form-section-title">
+                                        <i data-lucide="user"></i>
+                                        Información Personal
+                                    </h4>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="firstName">Nombres</label>
+                                            <input type="text" id="firstName" value="Juan" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Apellidos</label>
+                                            <input type="text" id="lastName" value="Pérez García" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="birthDate">Fecha de Nacimiento</label>
+                                            <input type="date" id="birthDate" value="1985-06-15" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="gender">Género</label>
+                                            <select id="gender" class="form-select">
+                                                <option value="male" selected>Masculino</option>
+                                                <option value="female">Femenino</option>
+                                                <option value="other">Otro</option>
+                                                <option value="prefer-not">Prefiero no decir</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idType">Tipo de Documento</label>
+                                            <select id="idType" class="form-select">
+                                                <option value="cc" selected>Cédula de Ciudadanía</option>
+                                                <option value="ce">Cédula de Extranjería</option>
+                                                <option value="passport">Pasaporte</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idNumber">Número de Documento</label>
+                                            <input type="text" id="idNumber" value="801234567" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- INFORMACIÓN DE CONTACTO -->
+                                <div class="form-section">
+                                    <h4 class="form-section-title">
+                                        <i data-lucide="phone"></i>
+                                        Información de Contacto
+                                    </h4>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="email">Correo Electrónico</label>
+                                            <input type="email" id="email" value="juan.perez@email.com" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Teléfono Celular</label>
+                                            <input type="tel" id="phone" value="+57 300 123 4567" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone2">Teléfono Fijo (Opcional)</label>
+                                            <input type="tel" id="phone2" value="+57 1 234 5678" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="country">País</label>
+                                            <select id="country" class="form-select">
+                                                <option value="colombia" selected>Colombia</option>
+                                                <option value="usa">Estados Unidos</option>
+                                                <option value="spain">España</option>
+                                                <option value="mexico">México</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city">Ciudad</label>
+                                            <input type="text" id="city" value="Bogotá, D.C." class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Dirección</label>
+                                            <input type="text" id="address" value="Calle 123 #45-67, Apt 8-90" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- INFORMACIÓN LABORAL -->
+                                <div class="form-section">
+                                    <h4 class="form-section-title">
+                                        <i data-lucide="briefcase"></i>
+                                        Información Laboral
+                                    </h4>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="occupation">Ocupación</label>
+                                            <input type="text" id="occupation" value="Gerente de Ventas" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="company">Empresa</label>
+                                            <input type="text" id="company" value="Tech Solutions S.A." class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="income">Ingresos Mensuales (COP)</label>
+                                            <input type="text" id="income" value="8,500,000" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="workPhone">Teléfono Laboral</label>
+                                            <input type="tel" id="workPhone" value="+57 1 345 6789" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PREFERENCIAS DE COMUNICACIÓN -->
+                                <div class="form-section">
+                                    <h4 class="form-section-title">
+                                        <i data-lucide="settings"></i>
+                                        Preferencias de Comunicación
+                                    </h4>
+                                    <div class="preferences-grid">
+                                        <div class="preference-item">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="emailNotifications" checked>
+                                                <span class="checkbox-custom"></span>
+                                                <span>Notificaciones por correo electrónico</span>
+                                            </label>
+                                        </div>
+                                        <div class="preference-item">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="smsNotifications" checked>
+                                                <span class="checkbox-custom"></span>
+                                                <span>Notificaciones por SMS</span>
+                                            </label>
+                                        </div>
+                                        <div class="preference-item">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="promotionalEmails">
+                                                <span class="checkbox-custom"></span>
+                                                <span>Correos promocionales</span>
+                                            </label>
+                                        </div>
+                                        <div class="preference-item">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="monthlyStatements" checked>
+                                                <span class="checkbox-custom"></span>
+                                                <span>Estado de cuenta mensual</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SEGURIDAD -->
+                                <div class="form-section">
+                                    <h4 class="form-section-title">
+                                        <i data-lucide="shield"></i>
+                                        Seguridad
+                                    </h4>
+                                    <div class="security-actions">
+                                        <button class="security-btn">
+                                            <i data-lucide="key"></i>
+                                            Cambiar Contraseña
+                                        </button>
+                                        <button class="security-btn">
+                                            <i data-lucide="smartphone"></i>
+                                            Autenticación de Dos Factores
+                                        </button>
+                                        <button class="security-btn">
+                                            <i data-lucide="fingerprint"></i>
+                                            Biometría Facial
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN TARJETAS (VISIBLE POR DEFECTO) -->
+                <div id="cards-section" class="content-section">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Mis Tarjetas</h2>
+                        <p class="hero-subtitle">Gestiona tus plásticos y consulta detalles haciendo clic en cada una.</p>
+                    </section>
+
+                    <!-- RESUMEN FINANCIERO -->
+                    <div class="financial-summary">
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i data-lucide="wallet"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h3>Saldo Disponible</h3>
+                                <p class="summary-amount">$45,230,000</p>
+                                <span class="summary-change positive">+12.5%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i data-lucide="credit-card"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h3>Línea de Crédito</h3>
+                                <p class="summary-amount">$80,000,000</p>
+                                <span class="summary-change neutral">Sin cambios</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i data-lucide="trending-up"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h3>Puntos Acumulados</h3>
+                                <p class="summary-amount">24,850</p>
+                                <span class="summary-change positive">+850 pts</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i data-lucide="calendar"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h3>Próximo Pago</h3>
+                                <p class="summary-amount">$2,450,000</p>
+                                <span class="summary-change negative">Vence en 5 días</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GRILLA DE TARJETAS INTERACTIVAS -->
+                    <div class="cards-grid">
+                        <!-- Tarjeta Platinum -->
+                        <div class="card-wrapper" data-card="platinum">
+                            <div class="card-inner">
+                                <div class="card-face card-front platinum-card">
+                                    <div class="card-glow"></div>
+                                    <header class="card-header">
+                                        <div class="chip"></div>
+                                        <div class="card-type">
+                                            <p class="type-label">Platinum Card</p>
+                                            <i data-lucide="wifi" class="contactless-icon"></i>
+                                        </div>
+                                    </header>
+                                    <div class="card-number">
+                                        <p>4532 8893 1245 0092</p>
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="cardholder-info">
+                                            <p class="label">Titular</p>
+                                            <p class="name">JUAN PÉREZ GARCÍA</p>
+                                        </div>
+                                        <div class="card-circles">
+                                            <div class="circle primary"></div>
+                                            <div class="circle secondary"></div>
+                                        </div>
+                                    </footer>
+                                </div>
+                                <div class="card-face card-back">
+                                    <div class="magnetic-bar"></div>
+                                    <div class="cvv-area">
+                                        <span class="cvv">CVC: 123</span>
+                                    </div>
+                                    <div class="legal-text">
+                                        Uso exclusivo de P.R.R. & Asociados. Sujeto a términos de contrato.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Ahorros -->
+                        <div class="card-wrapper" data-card="savings">
+                            <div class="card-inner">
+                                <div class="card-face card-front savings-card">
+                                    <div class="card-glow"></div>
+                                    <header class="card-header">
+                                        <div class="chip"></div>
+                                        <div class="card-type">
+                                            <p class="type-label">Ahorros Flex</p>
+                                            <i data-lucide="piggy-bank"></i>
+                                        </div>
+                                    </header>
+                                    <div class="card-number">
+                                        <p>9921 4452 0012 8734</p>
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="cardholder-info">
+                                            <p class="label">Titular</p>
+                                            <p class="name">JUAN PÉREZ GARCÍA</p>
+                                        </div>
+                                        <div class="network-logo">
+                                            VISA
+                                        </div>
+                                    </footer>
+                                </div>
+                                <div class="card-face card-back">
+                                    <div class="magnetic-bar"></div>
+                                    <div class="cvv-area">
+                                        <span class="cvv">CVC: 998</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Corriente -->
+                        <div class="card-wrapper" data-card="current">
+                            <div class="card-inner">
+                                <div class="card-face card-front current-card">
+                                    <div class="card-glow"></div>
+                                    <header class="card-header">
+                                        <div class="chip"></div>
+                                        <div class="card-type">
+                                            <p class="type-label">Cuenta Corriente</p>
+                                            <i data-lucide="briefcase"></i>
+                                        </div>
+                                    </header>
+                                    <div class="card-number">
+                                        <p>1102 9982 7734 5510</p>
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="cardholder-info">
+                                            <p class="label">Titular</p>
+                                            <p class="name">JUAN PÉREZ GARCÍA</p>
+                                        </div>
+                                        <div class="network-logo mastercard">MASTER</div>
+                                    </footer>
+                                </div>
+                                <div class="card-face card-back">
+                                    <div class="magnetic-bar"></div>
+                                    <div class="cvv-area">
+                                        <span class="cvv">CVC: 045</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RESUMEN RÁPIDO -->
+                    <section class="summary-section">
+                        <div class="summary-card">
+                            <div class="summary-info">
+                                <p class="summary-label">Saldo Total Combinado</p>
+                                <h3 class="summary-amount">$12,450,000.00 <span class="currency">COP</span></h3>
+                            </div>
+                            <div class="summary-actions">
+                                <button class="btn-primary full-width">Transferir</button>
+                                <button class="btn-secondary full-width">Pagar Tarjeta</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- SECCIÓN CONSIGNAR (OCULTA POR DEFECTO) -->
+                <div id="deposit-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Consignar Dinero</h2>
+                        <p class="hero-subtitle">Añade fondos a tu cuenta de forma rápida y segura</p>
+                    </section>
+
+                    <div class="operation-container">
+                        <div class="operation-card">
+                            <div class="operation-header">
+                                <div class="operation-icon">
+                                    <i data-lucide="plus-circle"></i>
+                                </div>
+                                <div class="operation-info">
+                                    <h3>Nueva Consignación</h3>
+                                    <p>Selecciona la cuenta y el monto a consignar</p>
+                                </div>
+                            </div>
+
+                            <form class="operation-form" onsubmit="handleDeposit(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="depositAccount">Cuenta Destino</label>
+                                        <select id="depositAccount" required>
+                                            <option value="">Selecciona una cuenta</option>
+                                            <option value="platinum">Tarjeta Platinum - ****0092</option>
+                                            <option value="savings">Cuenta Ahorros - ****8734</option>
+                                            <option value="current">Cuenta Corriente - ****5510</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="depositAmount">Monto a Consignar (COP)</label>
+                                        <input type="number" id="depositAmount" required min="10000" step="10000" placeholder="0.00">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="depositMethod">Método de Consignación</label>
+                                    <select id="depositMethod" required>
+                                        <option value="">Selecciona método</option>
+                                        <option value="transfer">Transferencia Bancaria</option>
+                                        <option value="cash">Efectivo</option>
+                                        <option value="check">Cheque</option>
+                                        <option value="nequi">Nequi</option>
+                                        <option value="daviplata">Daviplata</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="depositDescription">Descripción (Opcional)</label>
+                                    <input type="text" id="depositDescription" placeholder="Describe el origen de los fondos">
+                                </div>
+
+                                <div class="operation-summary">
+                                    <div class="summary-row">
+                                        <span>Subtotal:</span>
+                                        <span id="depositSubtotal">$0.00</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>Comisión (0.1%):</span>
+                                        <span id="depositFee">$0.00</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>Total a Consignar:</span>
+                                        <span id="depositTotal">$0.00</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-primary btn-large full-width">
+                                    <i data-lucide="check-circle"></i>
+                                    Confirmar Consignación
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN TRANSFERIR (OCULTA POR DEFECTO) -->
+                <div id="transfer-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Transferir Dinero</h2>
+                        <p class="hero-subtitle">Envía dinero a otras cuentas de forma segura</p>
+                    </section>
+
+                    <div class="operation-container">
+                        <div class="operation-card">
+                            <div class="operation-header">
+                                <div class="operation-icon">
+                                    <i data-lucide="send"></i>
+                                </div>
+                                <div class="operation-info">
+                                    <h3>Nueva Transferencia</h3>
+                                    <p>Completa los datos para enviar dinero</p>
+                                </div>
+                            </div>
+
+                            <form class="operation-form" onsubmit="handleTransfer(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="transferFrom">Cuenta Origen</label>
+                                        <select id="transferFrom" required>
+                                            <option value="">Selecciona cuenta origen</option>
+                                            <option value="platinum">Tarjeta Platinum - ****0092</option>
+                                            <option value="savings">Cuenta Ahorros - ****8734</option>
+                                            <option value="current">Cuenta Corriente - ****5510</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="transferTo">Cuenta Destino</label>
+                                        <input type="text" id="transferTo" required placeholder="Número de cuenta">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="transferAmount">Monto (COP)</label>
+                                        <input type="number" id="transferAmount" required min="10000" step="10000" placeholder="0.00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="transferType">Tipo de Transferencia</label>
+                                        <select id="transferType" required>
+                                            <option value="">Selecciona tipo</option>
+                                            <option value="own">Cuenta Propia</option>
+                                            <option value="third">Terceros (Mismo Banco)</option>
+                                            <option value="other">Otros Bancos</option>
+                                            <option value="international">Internacional</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transferBeneficiary">Nombre del Beneficiario</label>
+                                    <input type="text" id="transferBeneficiary" required placeholder="Nombre completo">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transferDescription">Concepto</label>
+                                    <input type="text" id="transferDescription" required placeholder="Describe el motivo de la transferencia">
+                                </div>
+
+                                <div class="operation-summary">
+                                    <div class="summary-row">
+                                        <span>Monto a Transferir:</span>
+                                        <span id="transferAmountDisplay">$0.00</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>Comisión:</span>
+                                        <span id="transferFee">$0.00</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>Total a Debitar:</span>
+                                        <span id="transferTotal">$0.00</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-primary btn-large full-width">
+                                    <i data-lucide="send"></i>
+                                    Realizar Transferencia
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CONSULTAR SALDO (OCULTA POR DEFECTO) -->
+                <div id="balance-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Consultar Saldo</h2>
+                        <p class="hero-subtitle">Revisa el saldo de todas tus cuentas</p>
+                    </section>
+
+                    <div class="balance-container">
+                        <div class="balance-cards-grid">
+                            <div class="balance-card">
+                                <div class="balance-header">
+                                    <div class="balance-icon platinum">
+                                        <i data-lucide="credit-card"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h4>Tarjeta Platinum</h4>
+                                        <p class="account-number">****0092</p>
+                                    </div>
+                                </div>
+                                <div class="balance-amount">
+                                    <span class="amount-label">Saldo Disponible</span>
+                                    <span class="amount-value">$45,230,000</span>
+                                </div>
+                                <div class="balance-details">
+                                    <div class="detail-item">
+                                        <span>Línea de Crédito:</span>
+                                        <span>$80,000,000</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span>Saldo Utilizado:</span>
+                                        <span>$34,770,000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="balance-card">
+                                <div class="balance-header">
+                                    <div class="balance-icon savings">
+                                        <i data-lucide="piggy-bank"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h4>Cuenta Ahorros</h4>
+                                        <p class="account-number">****8734</p>
+                                    </div>
+                                </div>
+                                <div class="balance-amount">
+                                    <span class="amount-label">Saldo Total</span>
+                                    <span class="amount-value">$12,450,000</span>
+                                </div>
+                                <div class="balance-details">
+                                    <div class="detail-item">
+                                        <span>Tasa Anual:</span>
+                                        <span>4.5% EA</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span>Interés Ganado:</span>
+                                        <span>$56,025</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="balance-card">
+                                <div class="balance-header">
+                                    <div class="balance-icon current">
+                                        <i data-lucide="briefcase"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h4>Cuenta Corriente</h4>
+                                        <p class="account-number">****5510</p>
+                                    </div>
+                                </div>
+                                <div class="balance-amount">
+                                    <span class="amount-label">Saldo Disponible</span>
+                                    <span class="amount-value">$8,750,000</span>
+                                </div>
+                                <div class="balance-details">
+                                    <div class="detail-item">
+                                        <span>Sobregiro Autorizado:</span>
+                                        <span>$5,000,000</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span>Manejo Mensual:</span>
+                                        <span>$25,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="total-balance-card">
+                            <div class="total-balance-content">
+                                <h3>Saldo Total Combinado</h3>
+                                <div class="total-amount">
+                                    <span class="currency">COP</span>
+                                    <span class="amount">$66,430,000</span>
+                                </div>
+                                <p class="last-update">Última actualización: <span id="lastBalanceUpdate">Hace 2 minutos</span></p>
+                            </div>
+                            <button class="btn-primary" onclick="refreshBalances()">
+                                <i data-lucide="refresh-cw"></i>
+                                Actualizar Saldos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN VER MOVIMIENTOS (OCULTA POR DEFECTO) -->
+                <div id="movements-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Ver Movimientos</h2>
+                        <p class="hero-subtitle">Consulta el historial de transacciones de todas tus cuentas</p>
+                    </section>
+
+                    <div class="movements-container">
+                        <div class="movements-filters">
+                            <div class="filter-group">
+                                <label for="filterAccount">Filtrar por Cuenta:</label>
+                                <select id="filterAccount">
+                                    <option value="all">Todas las cuentas</option>
+                                    <option value="platinum">Tarjeta Platinum</option>
+                                    <option value="savings">Cuenta Ahorros</option>
+                                    <option value="current">Cuenta Corriente</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filterType">Tipo de Movimiento:</label>
+                                <select id="filterType">
+                                    <option value="all">Todos</option>
+                                    <option value="deposit">Consignaciones</option>
+                                    <option value="transfer">Transferencias</option>
+                                    <option value="purchase">Compras</option>
+                                    <option value="withdrawal">Retiros</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filterDate">Período:</label>
+                                <select id="filterDate">
+                                    <option value="7">Últimos 7 días</option>
+                                    <option value="30">Últimos 30 días</option>
+                                    <option value="90">Últimos 3 meses</option>
+                                    <option value="365">Último año</option>
+                                </select>
+                            </div>
+                            <button class="btn-secondary" onclick="exportMovements()">
+                                <i data-lucide="download"></i>
+                                Exportar
+                            </button>
+                        </div>
+
+                        <div class="movements-list">
+                            <div class="movement-item deposit">
+                                <div class="movement-icon">
+                                    <i data-lucide="plus-circle"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Consignación</h4>
+                                    <p>Transferencia desde Banco de Bogotá</p>
+                                    <span class="movement-date">14 Abr 2026 - 10:23 AM</span>
+                                </div>
+                                <div class="movement-amount positive">
+                                    <span class="amount">+$5,000,000</span>
+                                    <span class="account">Platinum</span>
+                                </div>
+                            </div>
+
+                            <div class="movement-item transfer">
+                                <div class="movement-icon">
+                                    <i data-lucide="send"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Transferencia Enviada</h4>
+                                    <p>A María González - ****7890</p>
+                                    <span class="movement-date">13 Abr 2026 - 3:45 PM</span>
+                                </div>
+                                <div class="movement-amount negative">
+                                    <span class="amount">-$850,000</span>
+                                    <span class="account">Ahorros</span>
+                                </div>
+                            </div>
+
+                            <div class="movement-item purchase">
+                                <div class="movement-icon">
+                                    <i data-lucide="shopping-cart"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Compra</h4>
+                                    <p>Exito - Supermercado</p>
+                                    <span class="movement-date">12 Abr 2026 - 6:20 PM</span>
+                                </div>
+                                <div class="movement-amount negative">
+                                    <span class="amount">-$245,600</span>
+                                    <span class="account">Platinum</span>
+                                </div>
+                            </div>
+
+                            <div class="movement-item deposit">
+                                <div class="movement-icon">
+                                    <i data-lucide="plus-circle"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Consignación</h4>
+                                    <p>Nómina mensual - Tech Solutions S.A.</p>
+                                    <span class="movement-date">10 Abr 2026 - 9:00 AM</span>
+                                </div>
+                                <div class="movement-amount positive">
+                                    <span class="amount">+$8,500,000</span>
+                                    <span class="account">Corriente</span>
+                                </div>
+                            </div>
+
+                            <div class="movement-item withdrawal">
+                                <div class="movement-icon">
+                                    <i data-lucide="atm"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Retiro ATM</h4>
+                                    <p>Cajero Automático - Centro Comercial</p>
+                                    <span class="movement-date">8 Abr 2026 - 2:15 PM</span>
+                                </div>
+                                <div class="movement-amount negative">
+                                    <span class="amount">-$500,000</span>
+                                    <span class="account">Ahorros</span>
+                                </div>
+                            </div>
+
+                            <div class="movement-item transfer">
+                                <div class="movement-icon">
+                                    <i data-lucide="send"></i>
+                                </div>
+                                <div class="movement-details">
+                                    <h4>Transferencia Recibida</h4>
+                                    <p>De Carlos Rodríguez - ****1234</p>
+                                    <span class="movement-date">5 Abr 2026 - 11:30 AM</span>
+                                </div>
+                                <div class="movement-amount positive">
+                                    <span class="amount">+$1,200,000</span>
+                                    <span class="account">Corriente</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="movements-pagination">
+                            <button class="pagination-btn" disabled>
+                                <i data-lucide="chevron-left"></i>
+                                Anterior
+                            </button>
+                            <span class="page-info">Página 1 de 12</span>
+                            <button class="pagination-btn">
+                                Siguiente
+                                <i data-lucide="chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Verificar sesión al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionData = localStorage.getItem('prr_session') || sessionStorage.getItem('prr_session');
+            
+            if (!sessionData) {
+                // No hay sesión, redirigir a landing
+                window.location.href = 'landing.html';
+                return;
+            }
+            
+            try {
+                const session = JSON.parse(sessionData);
+                const loginTime = new Date(session.loginTime);
+                const now = new Date();
+                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                
+                // Si la sesión tiene más de 24 horas, expiró
+                if (hoursSinceLogin > 24) {
+                    localStorage.removeItem('prr_session');
+                    sessionStorage.removeItem('prr_session');
+                    window.location.href = 'landing.html';
+                    return;
+                }
+                
+                // Actualizar información del usuario en la interfaz
+                updateUserInterface(session.user);
+                
+            } catch (error) {
+                console.error('Error al verificar sesión:', error);
+                localStorage.removeItem('prr_session');
+                sessionStorage.removeItem('prr_session');
+                window.location.href = 'landing.html';
+            }
+        });
+        
+        function updateUserInterface(user) {
+            // Actualizar sidebar
+            const userNameElement = document.querySelector('.user-name');
+            if (userNameElement) {
+                userNameElement.textContent = user.name.split(' ')[0] + ' ' + user.name.split(' ').pop();
+            }
+            
+            const userAvatarElement = document.querySelector('.user-avatar img');
+            if (userAvatarElement) {
+                userAvatarElement.src = user.avatar;
+                userAvatarElement.alt = user.name;
+            }
+            
+            // Actualizar perfil si existe
+            const firstNameInput = document.getElementById('firstName');
+            if (firstNameInput) {
+                const nameParts = user.name.split(' ');
+                firstNameInput.value = nameParts.slice(0, -2).join(' ') || nameParts[0];
+            }
+            
+            const lastNameInput = document.getElementById('lastName');
+            if (lastNameInput) {
+                const nameParts = user.name.split(' ');
+                lastNameInput.value = nameParts.slice(-2).join(' ') || nameParts.slice(-1)[0];
+            }
+            
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.value = user.email;
+            }
+            
+            // Agregar botón de logout
+            addLogoutButton();
+        }
+        
+        function addLogoutButton() {
+            const navbarActions = document.querySelector('.navbar-actions');
+            if (navbarActions && !navbarActions.querySelector('.logout-btn')) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'action-btn logout-btn';
+                logoutBtn.innerHTML = '<i data-lucide="log-out"></i> Cerrar Sesión';
+                logoutBtn.onclick = function() {
+                    localStorage.removeItem('prr_session');
+                    sessionStorage.removeItem('prr_session');
+                    window.location.href = 'landing.html';
+                };
+                
+                // Insertar antes del último botón
+                const lastBtn = navbarActions.lastElementChild;
+                navbarActions.insertBefore(logoutBtn, lastBtn);
+                
+                // Re-inicializar iconos de Lucide
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

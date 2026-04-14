@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.R.R. & Asociados - Tarjeta Platinum Exclusiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <header class="landing-navbar">
+        <div class="landing-nav-container">
+            <div class="landing-logo">
+                <div class="logo-icon">
+                    <i data-lucide="briefcase"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="landing-logo-title">P.R.R. & Asociados</h1>
+                    <span class="landing-logo-subtitle">Consultoría Financiera</span>
+                </div>
+            </div>
+            
+            <nav class="landing-nav">
+                <a href="#beneficios" class="nav-link">Beneficios</a>
+                <a href="#caracteristicas" class="nav-link">Características</a>
+                <a href="#comparativa" class="nav-link">Comparativa</a>
+                <a href="#testimonios" class="nav-link">Testimonios</a>
+            </nav>
+            
+            <div class="landing-actions">
+                <button class="btn-secondary btn-large" onclick="showLoginModal()">
+                    <i data-lucide="log-in"></i>
+                    Iniciar Sesión
+                </button>
+                <button class="btn-primary btn-large">
+                    <i data-lucide="credit-card"></i>
+                    Solicitar Tarjeta
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-landing">
+        <div class="hero-landing-content">
+            <div class="hero-landing-text">
+                <div class="hero-badge">
+                    <i data-lucide="star"></i>
+                    <span>Exclusivo para Clientes Premium</span>
+                </div>
+                <h1 class="hero-landing-title">
+                    Tarjeta Platinum<br>
+                    <span class="highlight">Sin Anualidad</span>
+                </h1>
+                <p class="hero-landing-description">
+                    La tarjeta de crédito premium con los mejores beneficios del mercado. 
+                    Sin cuota de manejo, sin comisiones ocultas y con acceso exclusivo a lounges en aeropuertos.
+                </p>
+                <div class="hero-landing-features">
+                    <div class="feature-item">
+                        <i data-lucide="check-circle"></i>
+                        <span>Hasta 20% de descuento en compras</span>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="check-circle"></i>
+                        <span>Millas ilimitadas que nunca expiran</span>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="check-circle"></i>
+                        <span>Seguro de viaje incluido</span>
+                    </div>
+                </div>
+                <div class="hero-landing-cta">
+                    <button class="btn-primary btn-large">
+                        <i data-lucide="credit-card"></i>
+                        Solicitar mi Tarjeta Platinum
+                    </button>
+                    <p class="hero-disclaimer">
+                        <i data-lucide="shield-check"></i>
+                        Aprobación en 5 minutos • Sin compromiso
+                    </p>
+                </div>
+            </div>
+            
+            <div class="hero-landing-visual">
+                <div class="card-showcase">
+                    <div class="showcase-card platinum-card-3d">
+                        <div class="card-chip"></div>
+                        <div class="card-number-display">4532 •••• •••• 0092</div>
+                        <div class="card-logo">PLATINUM</div>
+                        <div class="card-network">VISA</div>
+                    </div>
+                    <div class="card-glow-effect"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-landing-bg">
+            <div class="bg-shape shape-1"></div>
+            <div class="bg-shape shape-2"></div>
+            <div class="bg-shape shape-3"></div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS SECTION -->
+    <section id="beneficios" class="benefits-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Beneficios Exclusivos</h2>
+                <p class="section-subtitle">Disfruta de privilegios diseñados para ti</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="plane"></i>
+                    </div>
+                    <h3>Acceso a VIP Lounges</h3>
+                    <p>Entrada gratuita a más de 1,200 salas VIP en aeropuertos alrededor del mundo.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="percent"></i>
+                    </div>
+                    <h3>20% en Compras</h3>
+                    <p>Descuentos exclusivos en tiendas departamentales, restaurantes y servicios.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="shield"></i>
+                    </div>
+                    <h3>Seguro Protegido</h3>
+                    <p>Protección total contra fraudes, robos y compras no reconocidas.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="map-pin"></i>
+                    </div>
+                    <h3>Concierge Personal</h3>
+                    <p>Asistente personal 24/7 para reservas, recomendaciones y emergencias.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="gift"></i>
+                    </div>
+                    <h3>Programa de Lealtad</h3>
+                    <p>Acumula puntos en cada compra y canjéalos por viajes, productos y experiencias.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-lucide="car"></i>
+                    </div>
+                    <h3>Seguro Vehicular</h3>
+                    <p>Cobertura completa para alquiler de vehículos en todo el mundo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS SECTION -->
+    <section id="caracteristicas" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Características Principales</h2>
+                <p class="section-subtitle">Todo lo que necesitas en una tarjeta</p>
+            </div>
+            
+            <div class="features-comparison">
+                <div class="feature-comparison-card">
+                    <h3>Condiciones Financieras</h3>
+                    <div class="feature-list">
+                        <div class="feature-row">
+                            <span>Tasa de Interés:</span>
+                            <strong>1.5% mensual</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Cuota de Manejo:</span>
+                            <strong class="text-success">$0</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Comisión por Avance:</span>
+                            <strong>3% + IVA</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Cupo Hasta:</span>
+                            <strong>$50.000.000</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Días de Gracia:</span>
+                            <strong>25 días</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-comparison-card">
+                    <h3>Límites y Beneficios</h3>
+                    <div class="feature-list">
+                        <div class="feature-row">
+                            <span>Compras Nacionales:</span>
+                            <strong>100% del cupo</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Compras Internacionales:</span>
+                            <strong>100% del cupo</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Avances en Efectivo:</span>
+                            <strong>50% del cupo</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Cuotas Especiales:</span>
+                            <strong>Hasta 48 meses</strong>
+                        </div>
+                        <div class="feature-row">
+                            <span>Millas por Compra:</span>
+                            <strong>1.5 milla/$1.000</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARATIVA SECTION -->
+    <section id="comparativa" class="comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">¿Por qué elegirnos?</h2>
+                <p class="section-subtitle">La mejor opción del mercado colombiano</p>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div class="feature-name">Característica</div>
+                    <div class="bank-col our-bank">
+                        <div class="bank-logo">
+                            <i data-lucide="briefcase"></i>
+                            <span>P.R.R. & Asociados</span>
+                        </div>
+                    </div>
+                    <div class="bank-col">
+                        <div class="bank-name">Banco Competencia A</div>
+                    </div>
+                    <div class="bank-col">
+                        <div class="bank-name">Banco Competencia B</div>
+                    </div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Cuota de Manejo</div>
+                    <div class="bank-col our-bank">
+                        <span class="highlight-feature">$0</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>$45.000</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>$60.000</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Tasa de Interés</div>
+                    <div class="bank-col our-bank">
+                        <span class="highlight-feature">1.5% mensual</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>2.2% mensual</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>2.5% mensual</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Acceso Lounges</div>
+                    <div class="bank-col our-bank">
+                        <span class="highlight-feature">✓ Ilimitado</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✓ 2 visitas/año</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✗ No disponible</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Seguro de Viaje</div>
+                    <div class="bank-col our-bank">
+                        <span class="highlight-feature">✓ Incluido</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✓ Opcional</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✗ No disponible</span>
+                    </div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Programa de Millas</div>
+                    <div class="bank-col our-bank">
+                        <span class="highlight-feature">✓ Nunca expiran</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✓ Expiran 2 años</span>
+                    </div>
+                    <div class="bank-col">
+                        <span>✓ Expiran 1 año</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS SECTION -->
+    <section id="testimonios" class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Clientes Satisfechos</h2>
+                <p class="section-subtitle">Descubre lo que dicen nuestros clientes</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "La mejor tarjeta que he tenido. Los beneficios en aeropuertos han salvado mis viajes de negocios. 
+                        Sin cuota de manejo es un diferencial increíble."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://i.pravatar.cc/100?u=carlos" alt="Carlos M.">
+                        </div>
+                        <div class="author-info">
+                            <h4>Carlos Mendoza</h4>
+                            <span>Gerente de Ventas</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "El servicio al cliente es excepcional. Me ayudaron a resolver un problema internacional 
+                        en menos de 24 horas. Totalmente recomendados."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://i.pravatar.cc/100?u=ana" alt="Ana L.">
+                        </div>
+                        <div class="author-info">
+                            <h4>Ana López</h4>
+                            <span>Emprendedora</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                        <i data-lucide="star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Las millas nunca expiran es el mejor beneficio. He acumulado suficiente 
+                        para dos vuelos internacionales en solo seis meses."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://i.pravatar.cc/100?u=roberto" alt="Roberto G.">
+                        </div>
+                        <div class="author-info">
+                            <h4>Roberto Gómez</h4>
+                            <span>Consultor TI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">¿Listo para experimentar la exclusividad?</h2>
+                <p class="cta-description">
+                    Solicita tu Tarjeta Platinum hoy y comienza a disfrutar de beneficios inmediatos. 
+                    Aprobación en 5 minutos sin burocracia.
+                </p>
+                <div class="cta-buttons">
+                    <button class="btn-primary btn-large">
+                        <i data-lucide="credit-card"></i>
+                        Solicitar Ahora
+                    </button>
+                    <button class="btn-secondary btn-large">
+                        <i data-lucide="info"></i>
+                        Más Información
+                    </button>
+                </div>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i data-lucide="check"></i>
+                        <span>Aprobación en 5 minutos</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i data-lucide="check"></i>
+                        <span>Sin documentos físicos</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i data-lucide="check"></i>
+                        <span>Activación inmediata</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="login-modal hidden">
+        <div class="modal-overlay" onclick="closeLoginModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Iniciar Sesión</h3>
+                <button class="modal-close" onclick="closeLoginModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required placeholder="juan.perez@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" required placeholder="Ingresa tu contraseña">
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkbox-custom"></span>
+                        Recordarme
+                    </label>
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary full-width">
+                    <i data-lucide="log-in"></i>
+                    Iniciar Sesión
+                </button>
+                
+                <div class="divider">
+                    <span>o</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="btn-social">
+                        <i data-lucide="smartphone"></i>
+                        Continuar con Teléfono
+                    </button>
+                    <button type="button" class="btn-social">
+                        <i data-lucide="fingerprint"></i>
+                        Biometría
+                    </button>
+                </div>
+                
+                <div class="signup-link">
+                    <p>¿No tienes cuenta? <a href="#" onclick="showSignupModal()">Regístrate aquí</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE REGISTRO -->
+    <div id="signupModal" class="login-modal hidden">
+        <div class="modal-overlay" onclick="closeSignupModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Crear Cuenta</h3>
+                <button class="modal-close" onclick="closeSignupModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <form class="signup-form" onsubmit="handleSignup(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signupFirstName">Nombres</label>
+                        <input type="text" id="signupFirstName" required placeholder="Juan">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupLastName">Apellidos</label>
+                        <input type="text" id="signupLastName" required placeholder="Pérez García">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Correo Electrónico</label>
+                    <input type="email" id="signupEmail" required placeholder="juan.perez@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPhone">Teléfono Celular</label>
+                    <input type="tel" id="signupPhone" required placeholder="+57 300 123 4567">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signupPassword">Contraseña</label>
+                        <input type="password" id="signupPassword" required placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirmar Contraseña</label>
+                        <input type="password" id="signupConfirmPassword" required placeholder="Repite tu contraseña">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupIdType">Tipo de Documento</label>
+                    <select id="signupIdType" required>
+                        <option value="">Selecciona...</option>
+                        <option value="cc">Cédula de Ciudadanía</option>
+                        <option value="ce">Cédula de Extranjería</option>
+                        <option value="passport">Pasaporte</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupIdNumber">Número de Documento</label>
+                    <input type="text" id="signupIdNumber" required placeholder="801234567">
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="acceptTerms" required>
+                        <span class="checkbox-custom"></span>
+                        Acepto los <a href="#" class="terms-link">Términos y Condiciones</a> y la <a href="#" class="terms-link">Política de Privacidad</a>
+                    </label>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="acceptMarketing">
+                        <span class="checkbox-custom"></span>
+                        Deseo recibir información promocional
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-primary full-width">
+                    <i data-lucide="user-plus"></i>
+                    Crear Cuenta
+                </button>
+                
+                <div class="signup-link">
+                    <p>¿Ya tienes cuenta? <a href="#" onclick="showLoginModal()">Inicia sesión aquí</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Sección superior del footer -->
+            <div class="footer-top">
+                <div class="footer-grid">
+                    <!-- Columna 1: Sobre Nosotros -->
+                    <div class="footer-column">
+                        <div class="footer-logo">
+                            <div class="logo-icon">
+                                <i data-lucide="briefcase"></i>
+                            </div>
+                            <div class="logo-text">
+                                <h3 class="footer-title">P.R.R. & Asociados</h3>
+                                <span class="footer-subtitle">Consultoría Financiera</span>
+                            </div>
+                        </div>
+                        <p class="footer-description">
+                            Líderes en consultoría financiera con más de 15 años de experiencia. 
+                            Ofrecemos soluciones personalizadas para optimizar tus finanzas y alcanzar tus metas.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <i data-lucide="facebook"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Twitter">
+                                <i data-lucide="twitter"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="LinkedIn">
+                                <i data-lucide="linkedin"></i>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <i data-lucide="instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna 2: Productos -->
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Nuestros Productos</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Tarjeta Platinum</a></li>
+                            <li><a href="#">Tarjeta Oro</a></li>
+                            <li><a href="#">Tarjeta Clásica</a></li>
+                            <li><a href="#">Cuentas de Ahorro</a></li>
+                            <li><a href="#">Préstamos Personales</a></li>
+                            <li><a href="#">Seguros</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 3: Servicios -->
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Servicios</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Banca en Línea</a></li>
+                            <li><a href="#">App Móvil</a></li>
+                            <li><a href="#">Transferencias</a></li>
+                            <li><a href="#">Pagos de Servicios</a></li>
+                            <li><a href="#">Recargas</a></li>
+                            <li><a href="#">Consultoría Empresarial</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Atención al Cliente -->
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Atención al Cliente</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Preguntas Frecuentes</a></li>
+                            <li><a href="#">Contacto</a></li>
+                            <li><a href="#">Sugerencias</a></li>
+                            <li><a href="#">Trabaja con Nosotros</a></li>
+                        </ul>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i data-lucide="phone"></i>
+                                <span>Línea Gratuita: 01-8000-123456</span>
+                            </div>
+                            <div class="contact-item">
+                                <i data-lucide="mail"></i>
+                                <span>contacto@prrasociados.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección inferior del footer -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="footer-legal">
+                        <p>&copy; 2026 P.R.R. & Asociados. Todos los derechos reservados.</p>
+                        <div class="legal-links">
+                            <a href="#">Términos y Condiciones</a>
+                            <a href="#">Política de Privacidad</a>
+                            <a href="#">Política de Datos</a>
+                            <a href="#">Política de Cookies</a>
+                            <a href="#">Regulaciones y Normas</a>
+                        </div>
+                    </div>
+                    <div class="footer-badges">
+                        <div class="badge-item">
+                            <i data-lucide="shield"></i>
+                            <span>Seguro y Confiable</span>
+                        </div>
+                        <div class="badge-item">
+                            <i data-lucide="award"></i>
+                            <span>Certificado por SuperFinanciera</span>
+                        </div>
+                        <div class="badge-item">
+                            <i data-lucide="globe"></i>
+                            <span>Servicio 24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="landing.js"></script>
+</body>
+</html>
