@@ -44,7 +44,7 @@
             <div class="nav-section">
                 <p class="nav-section-title">Mi Cuenta</p>
                 <div class="nav-group">
-                    <a href="#" class="nav-link active" data-page="profile">
+                    <a href="#" class="nav-link" data-page="profile">
                         <i data-lucide="user"></i>
                         <span>Mi Perfil</span>
                     </a>
@@ -80,7 +80,7 @@
             <div class="nav-section">
                 <p class="nav-section-title">Mis Productos</p>
                 <div class="nav-group">
-                    <a href="#" class="nav-link active" data-page="cards">
+                    <a href="#" class="nav-link" data-page="cards">
                         <i data-lucide="credit-card"></i>
                         <span>Tarjetas</span>
                     </a>
@@ -137,6 +137,119 @@
 
         <div class="main-content-wrapper">
             <main class="main-content">
+                <!-- SECCIÓN DASHBOARD (VISIBLE POR DEFECTO) -->
+                <div id="dashboard-section" class="content-section">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Dashboard Principal</h2>
+                        <p class="hero-subtitle">Resumen general de tus finanzas</p>
+                    </section>
+
+                    <div class="dashboard-summary">
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="dollar-sign"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Saldo Total</h3>
+                                    <p class="summary-amount">$66,430,000</p>
+                                    <span class="summary-change positive">+2.3%</span>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="credit-card"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Límite Disponible</h3>
+                                    <p class="summary-amount">$18,500,000</p>
+                                    <span class="summary-change">Sin cambios</span>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Inversiones</h3>
+                                    <p class="summary-amount">$25,200,000</p>
+                                    <span class="summary-change positive">+5.1%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-section">
+                            <h3>Actividad Reciente</h3>
+                            <div class="recent-activity">
+                                <div class="activity-item">
+                                    <div class="activity-icon positive">
+                                        <i data-lucide="arrow-down-left"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <h4>Consignación Recibida</h4>
+                                        <p>Nómina - Tech Solutions S.A.</p>
+                                        <span class="activity-amount">+$8,500,000</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon negative">
+                                        <i data-lucide="arrow-up-right"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <h4>Transferencia Enviada</h4>
+                                        <p>María González - Cuenta Ahorros</p>
+                                        <span class="activity-amount">-$850,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN TRANSACCIONES (OCULTA POR DEFECTO) -->
+                <div id="transactions-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Historial de Transacciones</h2>
+                        <p class="hero-subtitle">Todas tus transacciones en un solo lugar</p>
+                    </section>
+
+                    <div class="transactions-container">
+                        <div class="transactions-filters">
+                            <button class="filter-btn active">Todas</button>
+                            <button class="filter-btn">Ingresos</button>
+                            <button class="filter-btn">Egresos</button>
+                            <button class="filter-btn">Transferencias</button>
+                        </div>
+                        
+                        <div class="transactions-list">
+                            <div class="transaction-item">
+                                <div class="transaction-icon positive">
+                                    <i data-lucide="plus-circle"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <h4>Consignación</h4>
+                                    <p>Tech Solutions S.A. - Nómina</p>
+                                    <span class="transaction-date">14 Abr 2026</span>
+                                </div>
+                                <div class="transaction-amount positive">+$8,500,000</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon negative">
+                                    <i data-lucide="shopping-cart"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <h4>Compra</h4>
+                                    <p>Exito - Supermercado</p>
+                                    <span class="transaction-date">13 Abr 2026</span>
+                                </div>
+                                <div class="transaction-amount negative">-$245,600</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- SECCIÓN PERFIL (OCULTA POR DEFECTO) -->
                 <div id="profile-section" class="content-section hidden">
                     <section class="hero-section">
@@ -330,17 +443,20 @@
                                         Seguridad
                                     </h4>
                                     <div class="security-actions">
-                                        <button class="security-btn">
+                                        <button class="security-btn security-enabled" data-feature="change-password">
                                             <i data-lucide="key"></i>
                                             Cambiar Contraseña
                                         </button>
-                                        <button class="security-btn">
+                                        <!-- Botones deshabilitados por feature flags -->
+                                        <button class="security-btn security-disabled" data-feature="2fa" disabled>
                                             <i data-lucide="smartphone"></i>
                                             Autenticación de Dos Factores
+                                            <span class="feature-badge">Próximamente</span>
                                         </button>
-                                        <button class="security-btn">
+                                        <button class="security-btn security-disabled" data-feature="biometrics" disabled>
                                             <i data-lucide="fingerprint"></i>
                                             Biometría Facial
+                                            <span class="feature-badge">Próximamente</span>
                                         </button>
                                     </div>
                                 </div>
@@ -523,6 +639,189 @@
                             </div>
                         </div>
                     </section>
+                </div>
+
+                <!-- SECCIÓN CONFIGURACIÓN (OCULTA POR DEFECTO) -->
+                <div id="settings-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Configuración</h2>
+                        <p class="hero-subtitle">Personaliza tu experiencia y ajusta tus preferencias</p>
+                    </section>
+
+                    <div class="settings-container">
+                        <div class="settings-section">
+                            <h3>Preferencias de Cuenta</h3>
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Idioma</h4>
+                                        <p>Selecciona tu idioma preferido</p>
+                                    </div>
+                                    <select class="setting-select">
+                                        <option value="es" selected>Español</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Zona Horaria</h4>
+                                        <p>Ajusta la zona horaria para fechas y transacciones</p>
+                                    </div>
+                                    <select class="setting-select">
+                                        <option value="bogota" selected>Bogotá (GMT-5)</option>
+                                        <option value="mexico">Ciudad de México (GMT-6)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Notificaciones</h3>
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Alertas de Transacciones</h4>
+                                        <p>Recibe notificaciones de cada transacción</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Recordatorios de Pagos</h4>
+                                        <p>Alertas sobre fechas de vencimiento</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Seguridad</h3>
+                            <div class="settings-group">
+                                <button class="setting-btn security-enabled" data-feature="change-password">
+                                    <i data-lucide="key"></i>
+                                    Cambiar Contraseña
+                                </button>
+                                <!-- Botones deshabilitados por feature flags -->
+                                <button class="setting-btn security-disabled" data-feature="identity-verification" disabled>
+                                    <i data-lucide="shield"></i>
+                                    Verificar Identidad
+                                    <span class="feature-badge">Próximamente</span>
+                                </button>
+                                <button class="setting-btn security-disabled" data-feature="connected-devices" disabled>
+                                    <i data-lucide="smartphone"></i>
+                                    Dispositivos Conectados
+                                    <span class="feature-badge">Próximamente</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CUENTAS (OCULTA POR DEFECTO) -->
+                <div id="accounts-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Mis Cuentas</h2>
+                        <p class="hero-subtitle">Consulta el saldo y detalles de todas tus cuentas</p>
+                    </section>
+
+                    <div class="accounts-container">
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon savings">
+                                    <i data-lucide="wallet"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta de Ahorros</h4>
+                                    <p class="account-number">****8734</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Saldo Actual</p>
+                                    <p class="balance-amount">$12,450,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Tasa de Interés:</span>
+                                    <span>4.5% EA</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Categoria:</span>
+                                    <span>Cuenta Premium</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Movimientos</button>
+                                    <button class="btn-small">Transferir</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon current">
+                                    <i data-lucide="briefcase"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta Corriente</h4>
+                                    <p class="account-number">****5510</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Saldo Disponible</p>
+                                    <p class="balance-amount">$8,750,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Sobregiro:</span>
+                                    <span>$5,000,000</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Manejo Mensual:</span>
+                                    <span>$25,000</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Movimientos</button>
+                                    <button class="btn-small">Transferir</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon investment">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta de Inversión</h4>
+                                    <p class="account-number">****2341</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Valor Actual</p>
+                                    <p class="balance-amount">$25,200,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Rendimiento:</span>
+                                    <span>+8.2% anual</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Tipo:</span>
+                                    <span>Fondo de Inversión</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Detalles</button>
+                                    <button class="btn-small">Invertir Más</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SECCIÓN CONSIGNAR (OCULTA POR DEFECTO) -->

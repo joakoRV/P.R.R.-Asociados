@@ -1,4 +1,4 @@
-// Inicializar iconos// --- NAVEGACIÓN ENTRE SECCIONES ---
+// --- NAVEGACIÓN ENTRE SECCIONES ---
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar Lucide
     lucide.createIcons();
@@ -25,8 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Mostrar sección correspondiente
             let targetSection;
             switch(targetPage) {
+                case 'dashboard':
+                    targetSection = document.getElementById('dashboard-section');
+                    break;
+                case 'transactions':
+                    targetSection = document.getElementById('transactions-section');
+                    break;
                 case 'profile':
                     targetSection = document.getElementById('profile-section');
+                    break;
+                case 'settings':
+                    targetSection = document.getElementById('settings-section');
                     break;
                 case 'deposit':
                     targetSection = document.getElementById('deposit-section');
@@ -39,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'movements':
                     targetSection = document.getElementById('movements-section');
+                    break;
+                case 'accounts':
+                    targetSection = document.getElementById('accounts-section');
                     break;
                 case 'cards':
                 default:
@@ -326,14 +338,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Botones de seguridad
+    // Sistema de Feature Flags para funcionalidades
+    const featureFlags = {
+        'change-password': true,    // Disponible
+        '2fa': false,              // Próximamente
+        'biometrics': false,       // Próximamente
+        'identity-verification': false,
+        'connected-devices': false
+    };
+
+    // Función para verificar si una funcionalidad está disponible
+    function isFeatureEnabled(feature) {
+        return featureFlags[feature] || false;
+    }
+
+    // Botones de seguridad con manejo de feature flags
     const securityBtns = document.querySelectorAll('.security-btn');
     securityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const action = this.textContent.trim();
-            showNotification(`Abriendo configuración de ${action}...`, 'success');
-        });
+        const feature = btn.getAttribute('data-feature');
+        
+        if (feature) {
+            // Actualizar estado del botón según feature flag
+            if (isFeatureEnabled(feature)) {
+                btn.classList.remove('security-disabled');
+                btn.classList.add('security-enabled');
+                btn.disabled = false;
+                
+                // Añadir funcionalidad real
+                btn.addEventListener('click', function() {
+                    handleSecurityAction(feature);
+                });
+            } else {
+                btn.classList.remove('security-enabled');
+                btn.classList.add('security-disabled');
+                btn.disabled = true;
+                
+                // Mostrar notificación informativa
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Esta función estará disponible próximamente', 'info');
+                });
+            }
+        }
     });
+
+    // Manejador de acciones de seguridad
+    function handleSecurityAction(feature) {
+        switch(feature) {
+            case 'change-password':
+                showNotification('Abriendo formulario de cambio de contraseña...', 'success');
+                // Aquí podrías abrir un modal o redirigir
+                break;
+            case '2fa':
+                showNotification('Configuración de autenticación de dos factores', 'success');
+                break;
+            case 'biometrics':
+                showNotification('Configuración de biometría facial', 'success');
+                break;
+            default:
+                showNotification('Función en desarrollo', 'info');
+        }
+    }
     
     // Botón de cambiar avatar
     const avatarEditBtn = document.querySelector('.avatar-edit-btn');
@@ -836,61 +901,52 @@ if (!document.querySelector('#operation-animations')) {
     document.head.appendChild(animationStyles);
 }
 
-// Función para mostrar notificaciones
-function showNotification(message, type = 'success') {
+// --- NOTIFICACIONES ---
+
+function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Estilos para notificación
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'linear-gradient(135deg, #ec4899, #be185d)' : '#ef4444'};
-        color: white;
-        padding: 15px 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        animation: slideInRight 0.3s ease-out;
-        font-weight: 500;
-    `;
+    // Estilos básicos para la notificación
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        padding: '1rem 1.5rem',
+        borderRadius: '0.5rem',
+        color: 'white',
+        fontWeight: '500',
+        zIndex: '9999',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+    });
+    
+    // Colores según tipo
+    const colors = {
+        success: 'linear-gradient(135deg, #10b981, #059669)',
+        error: 'linear-gradient(135deg, #ef4444, #dc2626)',
+        warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+        info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+    };
+    
+    notification.style.background = colors[type] || colors.info;
     
     document.body.appendChild(notification);
     
+    // Animación de entrada
     setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-out';
-        setTimeout(() => notification.remove(), 300);
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Auto-eliminación
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
     }, 3000);
-}
-
-// Agregar animaciones CSS si no existen
-if (!document.querySelector('#notification-animations')) {
-    const animationStyles = document.createElement('style');
-    animationStyles.id = 'notification-animations';
-    animationStyles.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(animationStyles);
 }
