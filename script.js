@@ -1,3 +1,265 @@
+// --- 1. INICIALIZACIÓN DEL MOTOR LÓGICO ---
+// Creamos una cuenta de ahorros inicial con 500.000 COP
+// Asegúrate de que este objeto se cree una sola vez al inicio
+const miCuenta = new CuentaAhorros("123-456", 500000);
+
+// 2. EL EVENTO DE CARGA (Donde va el código por el que preguntas)
+document.addEventListener('DOMContentLoaded', () => {
+    // Primero intentamos recuperar datos guardados
+    cargarDesdeLocalStorage();
+    
+    // Luego actualizamos la vista con lo que encontramos (o con los 500k iniciales)
+    actualizarPantalla();
+    
+    // Inicializar los iconos de la interfaz
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+});
+
+// 3. FUNCIONES DE ACCIÓN (Retirar y Consignar)
+function manejarConsignacion() {
+    console.log("Función manejarConsignacion ejecutada");
+    const input = document.getElementById('amount-input');
+    const monto = parseFloat(input.value);
+    
+    console.log("Monto ingresado:", monto);
+    
+    // Validaciones
+    if (isNaN(monto) || monto <= 0) {
+        console.log("Monto inválido");
+        showNotification("Por favor, ingresa un monto válido mayor a cero", "warning");
+        return;
+    }
+    
+    console.log("Consignando:", monto);
+    if (miCuenta.consignar(monto)) {
+        console.log("Consignación exitosa, saldo actual:", miCuenta.saldo);
+        actualizarPantalla();
+        guardarEnLocalStorage();
+        showNotification(`¡Consignación exitosa! +$${monto.toLocaleString()}`, "success");
+        input.value = "";
+        input.focus();
+    }
+}
+
+function manejarRetiro() {
+    console.log("Función manejarRetiro ejecutada");
+    const input = document.getElementById('amount-input');
+    const monto = parseFloat(input.value);
+    
+    console.log("Monto a retirar:", monto);
+    
+    // Validaciones
+    if (isNaN(monto) || monto <= 0) {
+        console.log("Monto inválido");
+        showNotification("Por favor, ingresa un monto válido mayor a cero", "warning");
+        return;
+    }
+    
+    try {
+        console.log("Retirando:", monto);
+        miCuenta.retirar(monto);
+        console.log("Retiro exitoso, saldo actual:", miCuenta.saldo);
+        actualizarPantalla();
+        guardarEnLocalStorage();
+        showNotification(`Retiro exitoso (Comisión de 1.5% aplicada)`, "success");
+        input.value = "";
+        input.focus();
+    } catch (error) {
+        console.error("Error en retiro:", error.message);
+        showNotification(error.message, "error");
+    }
+}
+// --- 3. ACTUALIZACIÓN VISUAL (DOM) ---
+
+function actualizarPantalla() {
+    // 1. Actualizar el saldo principal (ID: 'main-balance' en tu index.html)
+    const saldoDisplay = document.getElementById('main-balance');
+    if (saldoDisplay) {
+        saldoDisplay.textContent = `$${miCuenta.saldo.toLocaleString()}`;
+    }
+    
+    // 2. Renderizar los movimientos en la tabla (ID: 'transaction-history')
+    // Buscamos el tbody para insertar las filas
+    const tablaBody = document.querySelector('#transaction-history tbody');
+    
+    if (tablaBody) {
+        tablaBody.innerHTML = ""; // Limpiamos la tabla
+        
+        // COMPOSICIÓN: Recorremos el historial que vive dentro del objeto miCuenta
+        if (miCuenta.movimientos.length === 0) {
+            tablaBody.innerHTML = `
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                    <td colspan="4" style="padding: 1.5rem; text-align: center; color: #9ca3af;">
+                        No hay movimientos aún. ¡Realiza tu primera operación!
+                    </td>
+                </tr>
+            `;
+        } else {
+            miCuenta.movimientos.forEach(mov => {
+                const fila = `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4 text-sm text-gray-600">${mov.fecha}</td>
+                        <td class="p-4 text-sm font-medium text-gray-800">${mov.tipo}</td>
+                        <td class="p-4 text-sm ${mov.monto < 0 ? 'text-red-500' : 'text-green-500'} font-semibold">
+                            ${mov.monto < 0 ? '-' : '+'}$${Math.abs(mov.monto).toLocaleString()}
+                        </td>
+                        <td class="p-4 text-sm text-gray-500">$${mov.saldoResultante.toLocaleString()}</td>
+                    </tr>
+                `;
+                tablaBody.innerHTML += fila;
+            });
+        }
+    }
+    
+    // 3. Actualizar actividad reciente en el dashboard
+    actualizarActividadReciente();
+    
+    // 4. Actualizar movimientos en la sección de movimientos
+    actualizarListaMovimientos();
+}
+
+function actualizarActividadReciente() {
+    const actividadContainer = document.getElementById('recent-activity-container');
+    if (!actividadContainer) return;
+    
+    if (miCuenta.movimientos.length === 0) {
+        actividadContainer.innerHTML = `
+            <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                No hay actividad reciente. Realiza tu primera transacción.
+            </p>
+        `;
+    } else {
+        // Mostrar solo los últimos 2 movimientos
+        const ultimosMovimientos = miCuenta.movimientos.slice().reverse().slice(0, 2);
+        let html = '';
+        
+        ultimosMovimientos.forEach(mov => {
+            const esPositivo = mov.monto > 0;
+            const icon = esPositivo ? 'arrow-down-left' : 'arrow-up-right';
+            const clase = esPositivo ? 'positive' : 'negative';
+            const tipo = mov.tipo.includes('Consignación') ? 'Consignación' : 'Retiro';
+            
+            html += `
+                <div class="activity-item">
+                    <div class="activity-icon ${clase}">
+                        <i data-lucide="${icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>${tipo}</h4>
+                        <p>${mov.fecha}</p>
+                        <span class="activity-amount">${esPositivo ? '+' : '-'}$${Math.abs(mov.monto).toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        actividadContainer.innerHTML = html;
+        
+        // Re-inicializar Lucide para los nuevos iconos
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+}
+
+function actualizarListaMovimientos() {
+    const movimientosContainer = document.getElementById('movements-list-container');
+    if (!movimientosContainer) return;
+    
+    if (miCuenta.movimientos.length === 0) {
+        movimientosContainer.innerHTML = `
+            <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                No hay movimientos. Realiza tu primera transacción.
+            </p>
+        `;
+    } else {
+        let html = '';
+        
+        // Mostrar todos los movimientos en orden inverso (más recientes primero)
+        miCuenta.movimientos.slice().reverse().forEach(mov => {
+            const esPositivo = mov.monto > 0;
+            let iconType = 'arrow-up-right';
+            let tipoTexto = 'Operación';
+            
+            if (mov.tipo.includes('Consignación')) {
+                iconType = 'plus-circle';
+                tipoTexto = 'Consignación';
+            } else if (mov.tipo.includes('Retiro') || mov.tipo.includes('Comisión')) {
+                iconType = 'minus-circle';
+                tipoTexto = 'Retiro';
+            }
+            
+            const clase = esPositivo ? 'deposit' : 'withdrawal';
+            const claseAmount = esPositivo ? 'positive' : 'negative';
+            
+            html += `
+                <div class="movement-item ${clase}">
+                    <div class="movement-icon">
+                        <i data-lucide="${iconType}"></i>
+                    </div>
+                    <div class="movement-details">
+                        <h4>${tipoTexto}</h4>
+                        <p>Cuenta: 123-456</p>
+                        <span class="movement-date">${mov.fecha}</span>
+                    </div>
+                    <div class="movement-amount ${claseAmount}">
+                        <span class="amount">${esPositivo ? '+' : '-'}$${Math.abs(mov.monto).toLocaleString()}</span>
+                        <span class="account">Ahorros</span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        movimientosContainer.innerHTML = html;
+        
+        // Re-inicializar Lucide para los nuevos iconos
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    
+    // Actualizar también la sección de transacciones
+    const transaccionesContainer = document.getElementById('transactions-list-container');
+    if (transaccionesContainer) {
+        if (miCuenta.movimientos.length === 0) {
+            transaccionesContainer.innerHTML = `
+                <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                    No hay transacciones. Realiza tu primera operación.
+                </p>
+            `;
+        } else {
+            let html = '';
+            
+            // Mostrar todos los movimientos en orden inverso
+            miCuenta.movimientos.slice().reverse().forEach(mov => {
+                const esPositivo = mov.monto > 0;
+                let iconType = 'plus-circle';
+                
+                if (!esPositivo) {
+                    iconType = 'minus-circle';
+                }
+                
+                const clase = esPositivo ? 'positive' : 'negative';
+                
+                html += `
+                    <div class="transaction-item">
+                        <div class="transaction-icon ${clase}">
+                            <i data-lucide="${iconType}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>${mov.tipo}</h4>
+                            <p>Cuenta: 123-456</p>
+                            <span class="transaction-date">${mov.fecha}</span>
+                        </div>
+                        <div class="transaction-amount ${clase}">${esPositivo ? '+' : ''}$${mov.monto.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+            
+            transaccionesContainer.innerHTML = html;
+            
+            // Re-inicializar Lucide para los nuevos iconos
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    }
+}
+
 // --- NAVEGACIÓN ENTRE SECCIONES ---
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar Lucide
@@ -25,6 +287,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Mostrar sección correspondiente
             let targetSection;
             switch(targetPage) {
+                case 'account':
+                    targetSection = document.getElementById('account-section');
+                    break;
                 case 'dashboard':
                     targetSection = document.getElementById('dashboard-section');
                     break;
@@ -949,4 +1214,22 @@ function showNotification(message, type = 'info') {
             }
         }, 300);
     }, 3000);
+}
+// --- TAREA 3: PERSISTENCIA (LocalStorage) ---
+
+function guardarEnLocalStorage() {
+    // Convertimos el objeto miCuenta a un texto JSON para guardarlo
+    localStorage.setItem('miPlata_cuenta', JSON.stringify(miCuenta));
+}
+
+function cargarDesdeLocalStorage() {
+    const datosGuardados = localStorage.getItem('miPlata_cuenta');
+    
+    if (datosGuardados) {
+        const datos = JSON.parse(datosGuardados);
+        // Aquí recuperamos el saldo y los movimientos que se guardaron antes
+        miCuenta._saldo = datos._saldo;
+        miCuenta.movimientos = datos.movimientos;
+        console.log("Datos cargados exitosamente");
+    }
 }
