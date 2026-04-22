@@ -352,6 +352,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return featureFlags[feature] || false;
     }
 
+    // Inicializar filtros de movimientos
+    initializeMovementFilters();
+    
+    // Renderizar movimientos iniciales si la sección está visible
+    if (!document.getElementById('movements-section').classList.contains('hidden')) {
+        renderMovements();
+    }
+    
     // Botones de seguridad con manejo de feature flags
     const securityBtns = document.querySelectorAll('.security-btn');
     securityBtns.forEach(btn => {
@@ -511,6 +519,11 @@ function handleDeposit(event) {
         // Actualizar saldos
         updateBalances();
         
+        // Actualizar vista de movimientos si está visible
+        if (document.getElementById('movements-section').classList.contains('hidden') === false) {
+            renderMovements();
+        }
+        
     }, 2000);
 }
 
@@ -595,6 +608,11 @@ function handleTransfer(event) {
         
         // Actualizar saldos
         updateBalances();
+        
+        // Actualizar vista de movimientos si está visible
+        if (document.getElementById('movements-section').classList.contains('hidden') === false) {
+            renderMovements();
+        }
         
     }, 2500);
 }
@@ -690,6 +708,164 @@ function saveTransaction(transaction) {
     }
     
     localStorage.setItem('prr_transactions', JSON.stringify(transactions));
+}
+
+function renderMovements() {
+    const movementsList = document.querySelector('.movements-list');
+    if (!movementsList) return;
+    
+    const movements = getTransactions();
+    const filteredMovements = filterMovements(movements);
+    
+    if (filteredMovements.length === 0) {
+        movementsList.innerHTML = `
+            <div class="no-movements">
+                <i data-lucide="inbox"></i>
+                <h3>No hay movimientos</h3>
+                <p>No se encontraron movimientos con los filtros seleccionados</p>
+            </div>
+        `;
+        lucide.createIcons();
+        return;
+    }
+    
+    movementsList.innerHTML = filteredMovements.map(movement => {
+        const isPositive = movement.type === 'deposit';
+        const icon = getMovementIcon(movement.type);
+        const accountName = getAccountName(movement.account);
+        const formattedDate = formatMovementDate(movement.date);
+        
+        return `
+            <div class="movement-item ${movement.type}">
+                <div class="movement-icon ${isPositive ? 'positive' : 'negative'}">
+                    <i data-lucide="${icon}"></i>
+                </div>
+                <div class="movement-details">
+                    <h4>${getMovementTitle(movement.type)}</h4>
+                    <p>${movement.description}</p>
+                    <span class="movement-date">${formattedDate}</span>
+                </div>
+                <div class="movement-amount ${isPositive ? 'positive' : 'negative'}">
+                    <span class="amount">${isPositive ? '+' : '-'}${formatCurrency(movement.amount)}</span>
+                    <span class="account">${accountName}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Re-inicializar Lucide icons
+    lucide.createIcons();
+}
+
+function filterMovements(movements) {
+    const accountFilter = document.getElementById('filterAccount')?.value || 'all';
+    const typeFilter = document.getElementById('filterType')?.value || 'all';
+    const dateFilter = document.getElementById('filterDate')?.value || '30';
+    
+    return movements.filter(movement => {
+        // Filtrar por cuenta
+        if (accountFilter !== 'all' && movement.account !== accountFilter) {
+            return false;
+        }
+        
+        // Filtrar por tipo
+        if (typeFilter !== 'all' && movement.type !== typeFilter) {
+            return false;
+        }
+        
+        // Filtrar por fecha
+        const movementDate = new Date(movement.date);
+        const daysAgo = parseInt(dateFilter);
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - daysAgo);
+        
+        return movementDate >= cutoffDate;
+    });
+}
+
+function getMovementIcon(type) {
+    const icons = {
+        'deposit': 'plus-circle',
+        'transfer': 'send',
+        'purchase': 'shopping-cart',
+        'withdrawal': 'atm',
+        'payment': 'credit-card',
+        'fee': 'alert-circle'
+    };
+    return icons[type] || 'circle';
+}
+
+function getMovementTitle(type) {
+    const titles = {
+        'deposit': 'Consignación',
+        'transfer': 'Transferencia',
+        'purchase': 'Compra',
+        'withdrawal': 'Retiro',
+        'payment': 'Pago',
+        'fee': 'Comisión'
+    };
+    return titles[type] || 'Movimiento';
+}
+
+function getAccountName(account) {
+    const names = {
+        'platinum': 'Platinum',
+        'savings': 'Ahorros',
+        'current': 'Corriente'
+    };
+    return names[account] || account;
+}
+
+function formatMovementDate(dateString) {
+    const date = new Date(dateString);
+    const options = { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    return date.toLocaleDateString('es-CO', options);
+}
+
+function initializeMovementFilters() {
+    // Añadir event listeners a los filtros
+    const filterAccount = document.getElementById('filterAccount');
+    const filterType = document.getElementById('filterType');
+    const filterDate = document.getElementById('filterDate');
+    
+    if (filterAccount) {
+        filterAccount.addEventListener('change', renderMovements);
+    }
+    
+    if (filterType) {
+        filterType.addEventListener('change', renderMovements);
+    }
+    
+    if (filterDate) {
+        filterDate.addEventListener('change', renderMovements);
+    }
+}
+
+function updateAccountBalance(account, amount) {
+    // Simular actualización de saldo (en una app real esto iría al backend)
+    const balances = JSON.parse(localStorage.getItem('prr_balances') || '{}');
+    if (!balances[account]) {
+        balances[account] = 0;
+    }
+    balances[account] += amount;
+    localStorage.setItem('prr_balances', JSON.stringify(balances));
+}
+
+function getMethodName(method) {
+    const methods = {
+        'transfer': 'Transferencia Bancaria',
+        'cash': 'Efectivo',
+        'check': 'Cheque',
+        'nequi': 'Nequi',
+        'daviplata': 'Daviplata'
+    };
+    return methods[method] || method;
 }
 
 function getTransactions() {

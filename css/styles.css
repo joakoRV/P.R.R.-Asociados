@@ -1572,7 +1572,7 @@ main.main-content {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 8rem 2rem 4rem;
+    padding: 10rem 2rem 4rem; /* Aumentado padding superior para evitar superposición con navbar */
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, var(--pink-light) 0%, #fef7ff 100%);
@@ -1589,6 +1589,9 @@ main.main-content {
 
 .hero-landing-text {
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Espaciado consistente entre elementos */
 }
 
 .hero-badge {
@@ -1601,8 +1604,17 @@ main.main-content {
     border-radius: 2rem;
     font-size: 0.875rem;
     font-weight: 600;
-    margin-bottom: 1.5rem;
     border: 1px solid rgba(236, 72, 153, 0.2);
+    position: relative; /* Asegurar que respete el flujo normal */
+    z-index: 1;
+    align-self: flex-start; /* Alinear al inicio del contenedor */
+    transition: all 0.3s ease;
+}
+
+.hero-badge:hover {
+    background: rgba(236, 72, 153, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
 }
 
 .hero-landing-title {
