@@ -1,4 +1,266 @@
-// Inicializar iconos// --- NAVEGACIÓN ENTRE SECCIONES ---
+// --- 1. INICIALIZACIÓN DEL MOTOR LÓGICO ---
+// Creamos una cuenta de ahorros inicial con 500.000 COP
+// Asegúrate de que este objeto se cree una sola vez al inicio
+const miCuenta = new CuentaAhorros("123-456", 500000);
+
+// 2. EL EVENTO DE CARGA (Donde va el código por el que preguntas)
+document.addEventListener('DOMContentLoaded', () => {
+    // Primero intentamos recuperar datos guardados
+    cargarDesdeLocalStorage();
+    
+    // Luego actualizamos la vista con lo que encontramos (o con los 500k iniciales)
+    actualizarPantalla();
+    
+    // Inicializar los iconos de la interfaz
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+});
+
+// 3. FUNCIONES DE ACCIÓN (Retirar y Consignar)
+function manejarConsignacion() {
+    console.log("Función manejarConsignacion ejecutada");
+    const input = document.getElementById('amount-input');
+    const monto = parseFloat(input.value);
+    
+    console.log("Monto ingresado:", monto);
+    
+    // Validaciones
+    if (isNaN(monto) || monto <= 0) {
+        console.log("Monto inválido");
+        showNotification("Por favor, ingresa un monto válido mayor a cero", "warning");
+        return;
+    }
+    
+    console.log("Consignando:", monto);
+    if (miCuenta.consignar(monto)) {
+        console.log("Consignación exitosa, saldo actual:", miCuenta.saldo);
+        actualizarPantalla();
+        guardarEnLocalStorage();
+        showNotification(`¡Consignación exitosa! +$${monto.toLocaleString()}`, "success");
+        input.value = "";
+        input.focus();
+    }
+}
+
+function manejarRetiro() {
+    console.log("Función manejarRetiro ejecutada");
+    const input = document.getElementById('amount-input');
+    const monto = parseFloat(input.value);
+    
+    console.log("Monto a retirar:", monto);
+    
+    // Validaciones
+    if (isNaN(monto) || monto <= 0) {
+        console.log("Monto inválido");
+        showNotification("Por favor, ingresa un monto válido mayor a cero", "warning");
+        return;
+    }
+    
+    try {
+        console.log("Retirando:", monto);
+        miCuenta.retirar(monto);
+        console.log("Retiro exitoso, saldo actual:", miCuenta.saldo);
+        actualizarPantalla();
+        guardarEnLocalStorage();
+        showNotification(`Retiro exitoso (Comisión de 1.5% aplicada)`, "success");
+        input.value = "";
+        input.focus();
+    } catch (error) {
+        console.error("Error en retiro:", error.message);
+        showNotification(error.message, "error");
+    }
+}
+// --- 3. ACTUALIZACIÓN VISUAL (DOM) ---
+
+function actualizarPantalla() {
+    // 1. Actualizar el saldo principal (ID: 'main-balance' en tu index.html)
+    const saldoDisplay = document.getElementById('main-balance');
+    if (saldoDisplay) {
+        saldoDisplay.textContent = `$${miCuenta.saldo.toLocaleString()}`;
+    }
+    
+    // 2. Renderizar los movimientos en la tabla (ID: 'transaction-history')
+    // Buscamos el tbody para insertar las filas
+    const tablaBody = document.querySelector('#transaction-history tbody');
+    
+    if (tablaBody) {
+        tablaBody.innerHTML = ""; // Limpiamos la tabla
+        
+        // COMPOSICIÓN: Recorremos el historial que vive dentro del objeto miCuenta
+        if (miCuenta.movimientos.length === 0) {
+            tablaBody.innerHTML = `
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                    <td colspan="4" style="padding: 1.5rem; text-align: center; color: #9ca3af;">
+                        No hay movimientos aún. ¡Realiza tu primera operación!
+                    </td>
+                </tr>
+            `;
+        } else {
+            miCuenta.movimientos.forEach(mov => {
+                const fila = `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4 text-sm text-gray-600">${mov.fecha}</td>
+                        <td class="p-4 text-sm font-medium text-gray-800">${mov.tipo}</td>
+                        <td class="p-4 text-sm ${mov.monto < 0 ? 'text-red-500' : 'text-green-500'} font-semibold">
+                            ${mov.monto < 0 ? '-' : '+'}$${Math.abs(mov.monto).toLocaleString()}
+                        </td>
+                        <td class="p-4 text-sm text-gray-500">$${mov.saldoResultante.toLocaleString()}</td>
+                    </tr>
+                `;
+                tablaBody.innerHTML += fila;
+            });
+        }
+    }
+    
+    // 3. Actualizar actividad reciente en el dashboard
+    actualizarActividadReciente();
+    
+    // 4. Actualizar movimientos en la sección de movimientos
+    actualizarListaMovimientos();
+}
+
+function actualizarActividadReciente() {
+    const actividadContainer = document.getElementById('recent-activity-container');
+    if (!actividadContainer) return;
+    
+    if (miCuenta.movimientos.length === 0) {
+        actividadContainer.innerHTML = `
+            <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                No hay actividad reciente. Realiza tu primera transacción.
+            </p>
+        `;
+    } else {
+        // Mostrar solo los últimos 2 movimientos
+        const ultimosMovimientos = miCuenta.movimientos.slice().reverse().slice(0, 2);
+        let html = '';
+        
+        ultimosMovimientos.forEach(mov => {
+            const esPositivo = mov.monto > 0;
+            const icon = esPositivo ? 'arrow-down-left' : 'arrow-up-right';
+            const clase = esPositivo ? 'positive' : 'negative';
+            const tipo = mov.tipo.includes('Consignación') ? 'Consignación' : 'Retiro';
+            
+            html += `
+                <div class="activity-item">
+                    <div class="activity-icon ${clase}">
+                        <i data-lucide="${icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>${tipo}</h4>
+                        <p>${mov.fecha}</p>
+                        <span class="activity-amount">${esPositivo ? '+' : '-'}$${Math.abs(mov.monto).toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        actividadContainer.innerHTML = html;
+        
+        // Re-inicializar Lucide para los nuevos iconos
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+}
+
+function actualizarListaMovimientos() {
+    const movimientosContainer = document.getElementById('movements-list-container');
+    if (!movimientosContainer) return;
+    
+    if (miCuenta.movimientos.length === 0) {
+        movimientosContainer.innerHTML = `
+            <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                No hay movimientos. Realiza tu primera transacción.
+            </p>
+        `;
+    } else {
+        let html = '';
+        
+        // Mostrar todos los movimientos en orden inverso (más recientes primero)
+        miCuenta.movimientos.slice().reverse().forEach(mov => {
+            const esPositivo = mov.monto > 0;
+            let iconType = 'arrow-up-right';
+            let tipoTexto = 'Operación';
+            
+            if (mov.tipo.includes('Consignación')) {
+                iconType = 'plus-circle';
+                tipoTexto = 'Consignación';
+            } else if (mov.tipo.includes('Retiro') || mov.tipo.includes('Comisión')) {
+                iconType = 'minus-circle';
+                tipoTexto = 'Retiro';
+            }
+            
+            const clase = esPositivo ? 'deposit' : 'withdrawal';
+            const claseAmount = esPositivo ? 'positive' : 'negative';
+            
+            html += `
+                <div class="movement-item ${clase}">
+                    <div class="movement-icon">
+                        <i data-lucide="${iconType}"></i>
+                    </div>
+                    <div class="movement-details">
+                        <h4>${tipoTexto}</h4>
+                        <p>Cuenta: 123-456</p>
+                        <span class="movement-date">${mov.fecha}</span>
+                    </div>
+                    <div class="movement-amount ${claseAmount}">
+                        <span class="amount">${esPositivo ? '+' : '-'}$${Math.abs(mov.monto).toLocaleString()}</span>
+                        <span class="account">Ahorros</span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        movimientosContainer.innerHTML = html;
+        
+        // Re-inicializar Lucide para los nuevos iconos
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    
+    // Actualizar también la sección de transacciones
+    const transaccionesContainer = document.getElementById('transactions-list-container');
+    if (transaccionesContainer) {
+        if (miCuenta.movimientos.length === 0) {
+            transaccionesContainer.innerHTML = `
+                <p style="color: #9ca3af; text-align: center; padding: 2rem;">
+                    No hay transacciones. Realiza tu primera operación.
+                </p>
+            `;
+        } else {
+            let html = '';
+            
+            // Mostrar todos los movimientos en orden inverso
+            miCuenta.movimientos.slice().reverse().forEach(mov => {
+                const esPositivo = mov.monto > 0;
+                let iconType = 'plus-circle';
+                
+                if (!esPositivo) {
+                    iconType = 'minus-circle';
+                }
+                
+                const clase = esPositivo ? 'positive' : 'negative';
+                
+                html += `
+                    <div class="transaction-item">
+                        <div class="transaction-icon ${clase}">
+                            <i data-lucide="${iconType}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>${mov.tipo}</h4>
+                            <p>Cuenta: 123-456</p>
+                            <span class="transaction-date">${mov.fecha}</span>
+                        </div>
+                        <div class="transaction-amount ${clase}">${esPositivo ? '+' : ''}$${mov.monto.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+            
+            transaccionesContainer.innerHTML = html;
+            
+            // Re-inicializar Lucide para los nuevos iconos
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    }
+}
+
+// --- NAVEGACIÓN ENTRE SECCIONES ---
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar Lucide
     lucide.createIcons();
@@ -25,8 +287,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Mostrar sección correspondiente
             let targetSection;
             switch(targetPage) {
+                case 'account':
+                    targetSection = document.getElementById('account-section');
+                    break;
+                case 'dashboard':
+                    targetSection = document.getElementById('dashboard-section');
+                    break;
+                case 'transactions':
+                    targetSection = document.getElementById('transactions-section');
+                    break;
                 case 'profile':
                     targetSection = document.getElementById('profile-section');
+                    break;
+                case 'settings':
+                    targetSection = document.getElementById('settings-section');
                     break;
                 case 'deposit':
                     targetSection = document.getElementById('deposit-section');
@@ -39,6 +313,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'movements':
                     targetSection = document.getElementById('movements-section');
+                    break;
+                case 'accounts':
+                    targetSection = document.getElementById('accounts-section');
                     break;
                 case 'cards':
                 default:
@@ -326,14 +603,75 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Botones de seguridad
+    // Sistema de Feature Flags para funcionalidades
+    const featureFlags = {
+        'change-password': true,    // Disponible
+        '2fa': false,              // Próximamente
+        'biometrics': false,       // Próximamente
+        'identity-verification': false,
+        'connected-devices': false
+    };
+
+    // Función para verificar si una funcionalidad está disponible
+    function isFeatureEnabled(feature) {
+        return featureFlags[feature] || false;
+    }
+
+    // Inicializar filtros de movimientos
+    initializeMovementFilters();
+    
+    // Renderizar movimientos iniciales si la sección está visible
+    if (!document.getElementById('movements-section').classList.contains('hidden')) {
+        renderMovements();
+    }
+    
+    // Botones de seguridad con manejo de feature flags
     const securityBtns = document.querySelectorAll('.security-btn');
     securityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const action = this.textContent.trim();
-            showNotification(`Abriendo configuración de ${action}...`, 'success');
-        });
+        const feature = btn.getAttribute('data-feature');
+        
+        if (feature) {
+            // Actualizar estado del botón según feature flag
+            if (isFeatureEnabled(feature)) {
+                btn.classList.remove('security-disabled');
+                btn.classList.add('security-enabled');
+                btn.disabled = false;
+                
+                // Añadir funcionalidad real
+                btn.addEventListener('click', function() {
+                    handleSecurityAction(feature);
+                });
+            } else {
+                btn.classList.remove('security-enabled');
+                btn.classList.add('security-disabled');
+                btn.disabled = true;
+                
+                // Mostrar notificación informativa
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Esta función estará disponible próximamente', 'info');
+                });
+            }
+        }
     });
+
+    // Manejador de acciones de seguridad
+    function handleSecurityAction(feature) {
+        switch(feature) {
+            case 'change-password':
+                showNotification('Abriendo formulario de cambio de contraseña...', 'success');
+                // Aquí podrías abrir un modal o redirigir
+                break;
+            case '2fa':
+                showNotification('Configuración de autenticación de dos factores', 'success');
+                break;
+            case 'biometrics':
+                showNotification('Configuración de biometría facial', 'success');
+                break;
+            default:
+                showNotification('Función en desarrollo', 'info');
+        }
+    }
     
     // Botón de cambiar avatar
     const avatarEditBtn = document.querySelector('.avatar-edit-btn');
@@ -446,6 +784,11 @@ function handleDeposit(event) {
         // Actualizar saldos
         updateBalances();
         
+        // Actualizar vista de movimientos si está visible
+        if (document.getElementById('movements-section').classList.contains('hidden') === false) {
+            renderMovements();
+        }
+        
     }, 2000);
 }
 
@@ -530,6 +873,11 @@ function handleTransfer(event) {
         
         // Actualizar saldos
         updateBalances();
+        
+        // Actualizar vista de movimientos si está visible
+        if (document.getElementById('movements-section').classList.contains('hidden') === false) {
+            renderMovements();
+        }
         
     }, 2500);
 }
@@ -625,6 +973,164 @@ function saveTransaction(transaction) {
     }
     
     localStorage.setItem('prr_transactions', JSON.stringify(transactions));
+}
+
+function renderMovements() {
+    const movementsList = document.querySelector('.movements-list');
+    if (!movementsList) return;
+    
+    const movements = getTransactions();
+    const filteredMovements = filterMovements(movements);
+    
+    if (filteredMovements.length === 0) {
+        movementsList.innerHTML = `
+            <div class="no-movements">
+                <i data-lucide="inbox"></i>
+                <h3>No hay movimientos</h3>
+                <p>No se encontraron movimientos con los filtros seleccionados</p>
+            </div>
+        `;
+        lucide.createIcons();
+        return;
+    }
+    
+    movementsList.innerHTML = filteredMovements.map(movement => {
+        const isPositive = movement.type === 'deposit';
+        const icon = getMovementIcon(movement.type);
+        const accountName = getAccountName(movement.account);
+        const formattedDate = formatMovementDate(movement.date);
+        
+        return `
+            <div class="movement-item ${movement.type}">
+                <div class="movement-icon ${isPositive ? 'positive' : 'negative'}">
+                    <i data-lucide="${icon}"></i>
+                </div>
+                <div class="movement-details">
+                    <h4>${getMovementTitle(movement.type)}</h4>
+                    <p>${movement.description}</p>
+                    <span class="movement-date">${formattedDate}</span>
+                </div>
+                <div class="movement-amount ${isPositive ? 'positive' : 'negative'}">
+                    <span class="amount">${isPositive ? '+' : '-'}${formatCurrency(movement.amount)}</span>
+                    <span class="account">${accountName}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Re-inicializar Lucide icons
+    lucide.createIcons();
+}
+
+function filterMovements(movements) {
+    const accountFilter = document.getElementById('filterAccount')?.value || 'all';
+    const typeFilter = document.getElementById('filterType')?.value || 'all';
+    const dateFilter = document.getElementById('filterDate')?.value || '30';
+    
+    return movements.filter(movement => {
+        // Filtrar por cuenta
+        if (accountFilter !== 'all' && movement.account !== accountFilter) {
+            return false;
+        }
+        
+        // Filtrar por tipo
+        if (typeFilter !== 'all' && movement.type !== typeFilter) {
+            return false;
+        }
+        
+        // Filtrar por fecha
+        const movementDate = new Date(movement.date);
+        const daysAgo = parseInt(dateFilter);
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - daysAgo);
+        
+        return movementDate >= cutoffDate;
+    });
+}
+
+function getMovementIcon(type) {
+    const icons = {
+        'deposit': 'plus-circle',
+        'transfer': 'send',
+        'purchase': 'shopping-cart',
+        'withdrawal': 'atm',
+        'payment': 'credit-card',
+        'fee': 'alert-circle'
+    };
+    return icons[type] || 'circle';
+}
+
+function getMovementTitle(type) {
+    const titles = {
+        'deposit': 'Consignación',
+        'transfer': 'Transferencia',
+        'purchase': 'Compra',
+        'withdrawal': 'Retiro',
+        'payment': 'Pago',
+        'fee': 'Comisión'
+    };
+    return titles[type] || 'Movimiento';
+}
+
+function getAccountName(account) {
+    const names = {
+        'platinum': 'Platinum',
+        'savings': 'Ahorros',
+        'current': 'Corriente'
+    };
+    return names[account] || account;
+}
+
+function formatMovementDate(dateString) {
+    const date = new Date(dateString);
+    const options = { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    return date.toLocaleDateString('es-CO', options);
+}
+
+function initializeMovementFilters() {
+    // Añadir event listeners a los filtros
+    const filterAccount = document.getElementById('filterAccount');
+    const filterType = document.getElementById('filterType');
+    const filterDate = document.getElementById('filterDate');
+    
+    if (filterAccount) {
+        filterAccount.addEventListener('change', renderMovements);
+    }
+    
+    if (filterType) {
+        filterType.addEventListener('change', renderMovements);
+    }
+    
+    if (filterDate) {
+        filterDate.addEventListener('change', renderMovements);
+    }
+}
+
+function updateAccountBalance(account, amount) {
+    // Simular actualización de saldo (en una app real esto iría al backend)
+    const balances = JSON.parse(localStorage.getItem('prr_balances') || '{}');
+    if (!balances[account]) {
+        balances[account] = 0;
+    }
+    balances[account] += amount;
+    localStorage.setItem('prr_balances', JSON.stringify(balances));
+}
+
+function getMethodName(method) {
+    const methods = {
+        'transfer': 'Transferencia Bancaria',
+        'cash': 'Efectivo',
+        'check': 'Cheque',
+        'nequi': 'Nequi',
+        'daviplata': 'Daviplata'
+    };
+    return methods[method] || method;
 }
 
 function getTransactions() {
@@ -836,61 +1342,70 @@ if (!document.querySelector('#operation-animations')) {
     document.head.appendChild(animationStyles);
 }
 
-// Función para mostrar notificaciones
-function showNotification(message, type = 'success') {
+// --- NOTIFICACIONES ---
+
+function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Estilos para notificación
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'linear-gradient(135deg, #ec4899, #be185d)' : '#ef4444'};
-        color: white;
-        padding: 15px 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        animation: slideInRight 0.3s ease-out;
-        font-weight: 500;
-    `;
+    // Estilos básicos para la notificación
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        padding: '1rem 1.5rem',
+        borderRadius: '0.5rem',
+        color: 'white',
+        fontWeight: '500',
+        zIndex: '9999',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+    });
+    
+    // Colores según tipo
+    const colors = {
+        success: 'linear-gradient(135deg, #10b981, #059669)',
+        error: 'linear-gradient(135deg, #ef4444, #dc2626)',
+        warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+        info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+    };
+    
+    notification.style.background = colors[type] || colors.info;
     
     document.body.appendChild(notification);
     
+    // Animación de entrada
     setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-out';
-        setTimeout(() => notification.remove(), 300);
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Auto-eliminación
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
     }, 3000);
 }
+// --- TAREA 3: PERSISTENCIA (LocalStorage) ---
 
-// Agregar animaciones CSS si no existen
-if (!document.querySelector('#notification-animations')) {
-    const animationStyles = document.createElement('style');
-    animationStyles.id = 'notification-animations';
-    animationStyles.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(animationStyles);
+function guardarEnLocalStorage() {
+    // Convertimos el objeto miCuenta a un texto JSON para guardarlo
+    localStorage.setItem('miPlata_cuenta', JSON.stringify(miCuenta));
+}
+
+function cargarDesdeLocalStorage() {
+    const datosGuardados = localStorage.getItem('miPlata_cuenta');
+    
+    if (datosGuardados) {
+        const datos = JSON.parse(datosGuardados);
+        // Aquí recuperamos el saldo y los movimientos que se guardaron antes
+        miCuenta._saldo = datos._saldo;
+        miCuenta.movimientos = datos.movimientos;
+        console.log("Datos cargados exitosamente");
+    }
 }

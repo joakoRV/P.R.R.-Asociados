@@ -44,7 +44,7 @@
             <div class="nav-section">
                 <p class="nav-section-title">Mi Cuenta</p>
                 <div class="nav-group">
-                    <a href="#" class="nav-link active" data-page="profile">
+                    <a href="#" class="nav-link" data-page="profile">
                         <i data-lucide="user"></i>
                         <span>Mi Perfil</span>
                     </a>
@@ -58,6 +58,10 @@
             <div class="nav-section">
                 <p class="nav-section-title">Operaciones</p>
                 <div class="nav-group">
+                    <a href="#" class="nav-link" data-page="account">
+                        <i data-lucide="wallet"></i>
+                        <span>Mis Operaciones</span>
+                    </a>
                     <a href="#" class="nav-link" data-page="deposit">
                         <i data-lucide="plus-circle"></i>
                         <span>Consignar</span>
@@ -80,7 +84,7 @@
             <div class="nav-section">
                 <p class="nav-section-title">Mis Productos</p>
                 <div class="nav-group">
-                    <a href="#" class="nav-link active" data-page="cards">
+                    <a href="#" class="nav-link" data-page="cards">
                         <i data-lucide="credit-card"></i>
                         <span>Tarjetas</span>
                     </a>
@@ -137,6 +141,79 @@
 
         <div class="main-content-wrapper">
             <main class="main-content">
+                <!-- SECCIÓN DASHBOARD (VISIBLE POR DEFECTO) -->
+                <div id="dashboard-section" class="content-section">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Dashboard Principal</h2>
+                        <p class="hero-subtitle">Resumen general de tus finanzas</p>
+                    </section>
+
+                    <div class="dashboard-summary">
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="dollar-sign"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Saldo Total</h3>
+                                    <p class="summary-amount">$500,000</p>
+                                    <span class="summary-change positive">+2.3%</span>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="credit-card"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Límite Disponible</h3>
+                                    <p class="summary-amount">$500,000</p>
+                                    <span class="summary-change">Sin cambios</span>
+                                </div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-icon">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="summary-content">
+                                    <h3>Inversiones</h3>
+                                    <p class="summary-amount">$500,000</p>
+                                    <span class="summary-change positive">+5.1%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-section">
+                            <h3>Actividad Reciente</h3>
+                            <div class="recent-activity" id="recent-activity-container">
+                                <p style="color: #9ca3af; text-align: center; padding: 2rem;">No hay actividad reciente. Realiza tu primera transacción.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN TRANSACCIONES (OCULTA POR DEFECTO) -->
+                <div id="transactions-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Historial de Transacciones</h2>
+                        <p class="hero-subtitle">Todas tus transacciones en un solo lugar</p>
+                    </section>
+
+                    <div class="transactions-container">
+                        <div class="transactions-filters">
+                            <button class="filter-btn active">Todas</button>
+                            <button class="filter-btn">Ingresos</button>
+                            <button class="filter-btn">Egresos</button>
+                            <button class="filter-btn">Transferencias</button>
+                        </div>
+                        
+                        <div class="transactions-list" id="transactions-list-container">
+                            <p style="color: #9ca3af; text-align: center; padding: 2rem;">No hay transacciones. Realiza tu primera operación.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- SECCIÓN PERFIL (OCULTA POR DEFECTO) -->
                 <div id="profile-section" class="content-section hidden">
                     <section class="hero-section">
@@ -330,20 +407,130 @@
                                         Seguridad
                                     </h4>
                                     <div class="security-actions">
-                                        <button class="security-btn">
+                                        <button class="security-btn security-enabled" data-feature="change-password">
                                             <i data-lucide="key"></i>
                                             Cambiar Contraseña
                                         </button>
-                                        <button class="security-btn">
+                                        <!-- Botones deshabilitados por feature flags -->
+                                        <button class="security-btn security-disabled" data-feature="2fa" disabled>
                                             <i data-lucide="smartphone"></i>
                                             Autenticación de Dos Factores
+                                            <span class="feature-badge">Próximamente</span>
                                         </button>
-                                        <button class="security-btn">
+                                        <button class="security-btn security-disabled" data-feature="biometrics" disabled>
                                             <i data-lucide="fingerprint"></i>
                                             Biometría Facial
+                                            <span class="feature-badge">Próximamente</span>
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CUENTA DE AHORROS (NUEVA) -->
+                <div id="account-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Mis Operaciones Bancarias</h2>
+                        <p class="hero-subtitle">Gestiona tu cuenta de ahorros con consignaciones y retiros</p>
+                    </section>
+
+                    <div class="operation-container">
+                        <!-- TARJETA DE SALDO -->
+                        <div class="operation-card">
+                            <div class="operation-header">
+                                <div class="operation-icon">
+                                    <i data-lucide="wallet"></i>
+                                </div>
+                                <div class="operation-info">
+                                    <h3>Saldo Disponible</h3>
+                                    <p>Tu cuenta de ahorros</p>
+                                </div>
+                            </div>
+                            <div class="balance-display">
+                                <h2 id="main-balance" style="font-size: 2.5rem; color: #10b981; font-weight: bold;">$500,000</h2>
+                                <p style="color: #6b7280; margin-top: 0.5rem;">Cuenta: 123-456</p>
+                            </div>
+                        </div>
+
+                        <!-- FORMULARIO DE OPERACIONES -->
+                        <div class="operation-card">
+                            <div class="operation-header">
+                                <div class="operation-icon">
+                                    <i data-lucide="arrow-up-down"></i>
+                                </div>
+                                <div class="operation-info">
+                                    <h3>Realizar Operación</h3>
+                                    <p>Consignar o retirar dinero</p>
+                                </div>
+                            </div>
+
+                            <div class="operation-form" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 200px;">
+                                    <label for="amount-input" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Monto (COP):</label>
+                                    <input 
+                                        type="number" 
+                                        id="amount-input" 
+                                        placeholder="Ingresa el monto" 
+                                        min="0" 
+                                        step="1000"
+                                        style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; font-size: 1rem;"
+                                    >
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button 
+                                        type="button" 
+                                        onclick="manejarConsignacion()" 
+                                        class="btn-primary"
+                                        style="padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem;"
+                                    >
+                                        <i data-lucide="plus-circle" style="width: 20px; height: 20px;"></i>
+                                        Consignar
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        onclick="manejarRetiro()" 
+                                        class="btn-secondary"
+                                        style="padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem;"
+                                    >
+                                        <i data-lucide="minus-circle" style="width: 20px; height: 20px;"></i>
+                                        Retirar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA DE MOVIMIENTOS -->
+                        <div class="operation-card">
+                            <div class="operation-header">
+                                <div class="operation-icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="operation-info">
+                                    <h3>Historial de Transacciones</h3>
+                                    <p>Últimos movimientos de tu cuenta</p>
+                                </div>
+                            </div>
+
+                            <div style="overflow-x: auto;">
+                                <table id="transaction-history" style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                                    <thead style="background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+                                        <tr>
+                                            <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Fecha</th>
+                                            <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Tipo</th>
+                                            <th style="padding: 1rem; text-align: right; font-weight: 600; color: #374151;">Monto</th>
+                                            <th style="padding: 1rem; text-align: right; font-weight: 600; color: #374151;">Saldo Resultante</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                                            <td colspan="4" style="padding: 1.5rem; text-align: center; color: #9ca3af;">
+                                                No hay movimientos aún. ¡Realiza tu primera operación!
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -364,7 +551,7 @@
                             </div>
                             <div class="summary-content">
                                 <h3>Saldo Disponible</h3>
-                                <p class="summary-amount">$45,230,000</p>
+                                <p class="summary-amount">$500,000</p>
                                 <span class="summary-change positive">+12.5%</span>
                             </div>
                         </div>
@@ -375,7 +562,7 @@
                             </div>
                             <div class="summary-content">
                                 <h3>Línea de Crédito</h3>
-                                <p class="summary-amount">$80,000,000</p>
+                                <p class="summary-amount">$500,000</p>
                                 <span class="summary-change neutral">Sin cambios</span>
                             </div>
                         </div>
@@ -386,8 +573,8 @@
                             </div>
                             <div class="summary-content">
                                 <h3>Puntos Acumulados</h3>
-                                <p class="summary-amount">24,850</p>
-                                <span class="summary-change positive">+850 pts</span>
+                                <p class="summary-amount">500</p>
+                                <span class="summary-change positive">+50 pts</span>
                             </div>
                         </div>
                         
@@ -397,7 +584,7 @@
                             </div>
                             <div class="summary-content">
                                 <h3>Próximo Pago</h3>
-                                <p class="summary-amount">$2,450,000</p>
+                                <p class="summary-amount">$500,000</p>
                                 <span class="summary-change negative">Vence en 5 días</span>
                             </div>
                         </div>
@@ -515,7 +702,7 @@
                         <div class="summary-card">
                             <div class="summary-info">
                                 <p class="summary-label">Saldo Total Combinado</p>
-                                <h3 class="summary-amount">$12,450,000.00 <span class="currency">COP</span></h3>
+                                <h3 class="summary-amount">$500,000.00 <span class="currency">COP</span></h3>
                             </div>
                             <div class="summary-actions">
                                 <button class="btn-primary full-width">Transferir</button>
@@ -523,6 +710,189 @@
                             </div>
                         </div>
                     </section>
+                </div>
+
+                <!-- SECCIÓN CONFIGURACIÓN (OCULTA POR DEFECTO) -->
+                <div id="settings-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Configuración</h2>
+                        <p class="hero-subtitle">Personaliza tu experiencia y ajusta tus preferencias</p>
+                    </section>
+
+                    <div class="settings-container">
+                        <div class="settings-section">
+                            <h3>Preferencias de Cuenta</h3>
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Idioma</h4>
+                                        <p>Selecciona tu idioma preferido</p>
+                                    </div>
+                                    <select class="setting-select">
+                                        <option value="es" selected>Español</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Zona Horaria</h4>
+                                        <p>Ajusta la zona horaria para fechas y transacciones</p>
+                                    </div>
+                                    <select class="setting-select">
+                                        <option value="bogota" selected>Bogotá (GMT-5)</option>
+                                        <option value="mexico">Ciudad de México (GMT-6)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Notificaciones</h3>
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Alertas de Transacciones</h4>
+                                        <p>Recibe notificaciones de cada transacción</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Recordatorios de Pagos</h4>
+                                        <p>Alertas sobre fechas de vencimiento</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Seguridad</h3>
+                            <div class="settings-group">
+                                <button class="setting-btn security-enabled" data-feature="change-password">
+                                    <i data-lucide="key"></i>
+                                    Cambiar Contraseña
+                                </button>
+                                <!-- Botones deshabilitados por feature flags -->
+                                <button class="setting-btn security-disabled" data-feature="identity-verification" disabled>
+                                    <i data-lucide="shield"></i>
+                                    Verificar Identidad
+                                    <span class="feature-badge">Próximamente</span>
+                                </button>
+                                <button class="setting-btn security-disabled" data-feature="connected-devices" disabled>
+                                    <i data-lucide="smartphone"></i>
+                                    Dispositivos Conectados
+                                    <span class="feature-badge">Próximamente</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CUENTAS (OCULTA POR DEFECTO) -->
+                <div id="accounts-section" class="content-section hidden">
+                    <section class="hero-section">
+                        <h2 class="hero-title">Mis Cuentas</h2>
+                        <p class="hero-subtitle">Consulta el saldo y detalles de todas tus cuentas</p>
+                    </section>
+
+                    <div class="accounts-container">
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon savings">
+                                    <i data-lucide="wallet"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta de Ahorros</h4>
+                                    <p class="account-number">****8734</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Saldo Actual</p>
+                                    <p class="balance-amount">$500,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Tasa de Interés:</span>
+                                    <span>4.5% EA</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Categoria:</span>
+                                    <span>Cuenta Premium</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Movimientos</button>
+                                    <button class="btn-small">Transferir</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon current">
+                                    <i data-lucide="briefcase"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta Corriente</h4>
+                                    <p class="account-number">****5510</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Saldo Disponible</p>
+                                    <p class="balance-amount">$500,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Sobregiro:</span>
+                                    <span>$100,000</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Manejo Mensual:</span>
+                                    <span>$25,000</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Movimientos</button>
+                                    <button class="btn-small">Transferir</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-card">
+                            <div class="account-header">
+                                <div class="account-icon investment">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="account-info">
+                                    <h4>Cuenta de Inversión</h4>
+                                    <p class="account-number">****2341</p>
+                                </div>
+                                <div class="account-balance">
+                                    <p class="balance-label">Valor Actual</p>
+                                    <p class="balance-amount">$500,000</p>
+                                </div>
+                            </div>
+                            <div class="account-details">
+                                <div class="detail-row">
+                                    <span>Rendimiento:</span>
+                                    <span>+8.2% anual</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Tipo:</span>
+                                    <span>Fondo de Inversión</span>
+                                </div>
+                                <div class="account-actions">
+                                    <button class="btn-small">Ver Detalles</button>
+                                    <button class="btn-small">Invertir Más</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SECCIÓN CONSIGNAR (OCULTA POR DEFECTO) -->
@@ -710,16 +1080,16 @@
                                 </div>
                                 <div class="balance-amount">
                                     <span class="amount-label">Saldo Disponible</span>
-                                    <span class="amount-value">$45,230,000</span>
+                                    <span class="amount-value">$500,000</span>
                                 </div>
                                 <div class="balance-details">
                                     <div class="detail-item">
                                         <span>Línea de Crédito:</span>
-                                        <span>$80,000,000</span>
+                                        <span>$500,000</span>
                                     </div>
                                     <div class="detail-item">
                                         <span>Saldo Utilizado:</span>
-                                        <span>$34,770,000</span>
+                                        <span>$0</span>
                                     </div>
                                 </div>
                             </div>
@@ -736,7 +1106,7 @@
                                 </div>
                                 <div class="balance-amount">
                                     <span class="amount-label">Saldo Total</span>
-                                    <span class="amount-value">$12,450,000</span>
+                                    <span class="amount-value">$500,000</span>
                                 </div>
                                 <div class="balance-details">
                                     <div class="detail-item">
@@ -745,7 +1115,7 @@
                                     </div>
                                     <div class="detail-item">
                                         <span>Interés Ganado:</span>
-                                        <span>$56,025</span>
+                                        <span>$2,250</span>
                                     </div>
                                 </div>
                             </div>
@@ -762,16 +1132,16 @@
                                 </div>
                                 <div class="balance-amount">
                                     <span class="amount-label">Saldo Disponible</span>
-                                    <span class="amount-value">$8,750,000</span>
+                                    <span class="amount-value">$500,000</span>
                                 </div>
                                 <div class="balance-details">
                                     <div class="detail-item">
                                         <span>Sobregiro Autorizado:</span>
-                                        <span>$5,000,000</span>
+                                        <span>$100,000</span>
                                     </div>
                                     <div class="detail-item">
                                         <span>Manejo Mensual:</span>
-                                        <span>$25,000</span>
+                                        <span>$5,000</span>
                                     </div>
                                 </div>
                             </div>
@@ -782,7 +1152,7 @@
                                 <h3>Saldo Total Combinado</h3>
                                 <div class="total-amount">
                                     <span class="currency">COP</span>
-                                    <span class="amount">$66,430,000</span>
+                                    <span class="amount">$1,500,000</span>
                                 </div>
                                 <p class="last-update">Última actualización: <span id="lastBalanceUpdate">Hace 2 minutos</span></p>
                             </div>
@@ -947,9 +1317,12 @@
             </div>
     </div>
 
+    <!-- Scripts del motor lógico -->
+    <script src="js/interfaces.js"></script>
+    <script src="js/modelos.js"></script>
     <script src="script.js"></script>
     <script>
-        // Verificar sesión al cargar la página
+       // Verificar sesión al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
             const sessionData = localStorage.getItem('prr_session') || sessionStorage.getItem('prr_session');
             
@@ -1041,6 +1414,6 @@
                 }
             }
         }
-    </script>
+    </script> 
 </body>
 </html>
